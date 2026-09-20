@@ -24,7 +24,7 @@ export const services = fs
   .filter(f => f.endsWith('.json'))
   .map(f => readJson('data/services/' + f));
 // Порядок в каталоге и меню — по важности для целевой аудитории (УК и ТСЖ)
-const ORDER = ['krovelnye-raboty', 'fasadnye-raboty', 'germetizaciya-temperaturnyh-shvov', 'remont-podezdov', 'remont-liftovyh-kabin', 'okna-i-dveri', 'asfaltirovanie-otmostka', 'blagoustroystvo-territorij', 'spectehnika-vyvoz-snega', 'elektromontazhnye-raboty', 'svarochnye-raboty', 'remont-pomeshcheniy', 'kapitalnoe-stroitelstvo-remont', 'sezonnaya-podgotovka-zdaniy', 'dezinsekciya', 'deratizaciya', 'sanitarnaya-obrabotka'];
+const ORDER = ['krovelnye-raboty', 'fasadnye-raboty', 'germetizaciya-temperaturnyh-shvov', 'remont-podezdov', 'remont-liftovyh-kabin', 'okna-i-dveri', 'asfaltirovanie-otmostka', 'blagoustroystvo-territorij', 'spectehnika-vyvoz-snega', 'elektromontazhnye-raboty', 'svarochnye-raboty', 'remont-pomeshcheniy', 'kapitalnoe-stroitelstvo-remont', 'sezonnaya-podgotovka-zdaniy'];
 services.sort((a, b) => ORDER.indexOf(a.slug) - ORDER.indexOf(b.slug));
 export const svcBySlug = Object.fromEntries(services.map(s => [s.slug, s]));
 

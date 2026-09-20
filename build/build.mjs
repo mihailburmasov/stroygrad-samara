@@ -90,7 +90,7 @@ function home() {
     <div>
       <p class="eyebrow">Для B2B-заказчиков</p>
       <h2 id="uk-h">Управляющим компаниям и ТСЖ</h2>
-      <p class="lead">${esc(company.slogans.one)}. Кровля, фасады, подъезды, лифты, снег, обработка подвалов — по одному договору, с документами для отчётности.</p>
+      <p class="lead">${esc(company.slogans.one)}. Кровля, фасады, подъезды, лифты, окна и двери, снег — по одному договору, с документами для отчётности.</p>
       <div class="hero__actions"><a class="btn btn--primary" href="${href('/for-uk-tsj/')}">Подробнее для УК и ТСЖ</a><a class="btn btn--ghost" href="${href('/for-uk-tsj/#zayavka')}">Запросить коммерческое предложение</a></div>
     </div>
     <ul class="uk__list">
