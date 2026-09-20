@@ -1,0 +1,19 @@
+{
+  "name": "stroygrad-samara",
+  "version": "1.0.0",
+  "description": "Сайт строительной компании СТРОЙГРАД (Самара)",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build/build.mjs",
+    "build:local": "node scripts/local-build.mjs",
+    "build:draft": "node scripts/local-build.mjs --draft",
+    "check": "node scripts/check.mjs",
+    "dev": "node scripts/serve.mjs",
+    "images": "node scripts/optimize-images.mjs",
+    "assets": "node scripts/make-brand-assets.mjs"
+  },
+  "devDependencies": {
+    "sharp": "^0.35.4"
+  }
+}

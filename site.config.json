@@ -1,0 +1,6 @@
+{
+  "_comment": "Настройки сборки. siteUrl — адрес сайта без слеша в конце; basePath — подпапка, если сайт лежит не в корне домена (для GitHub Pages: /имя-репозитория). Для своего домена: basePath = \"\", siteUrl = \"https://ваш-домен.ru\". Переменные окружения SITE_URL и SITE_BASE переопределяют эти значения.",
+  "siteUrl": "https://mihailburmasov.github.io",
+  "basePath": "/stroygrad-samara",
+  "studioSlug": "stroygrad-samara"
+}

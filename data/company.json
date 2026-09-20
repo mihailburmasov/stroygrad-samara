@@ -1,0 +1,38 @@
+{
+  "_comment": "Единственный источник фактов о компании. Все страницы, шапка, подвал, микроразметка и юридические документы берут данные отсюда. Поля со значением null — данные, которые нужно уточнить у клиента (см. QUESTIONS_FOR_CLIENT.md).",
+  "name": "СТРОЙГРАД",
+  "brandLine": "Строительная компания",
+  "formerNames": ["Тихий город", "Олимп"],
+  "foundedYear": 2012,
+  "city": "Самара",
+  "cityIn": "в Самаре",
+  "region": "Самарская область",
+  "areaServed": ["Самара", "Самарская область"],
+  "phones": [
+    { "display": "8 927 203-73-73", "tel": "+79272037373" },
+    { "display": "8 927 260-73-67", "tel": "+79272607367" },
+    { "display": "8 917 107-93-84", "tel": "+79171079384" }
+  ],
+  "email": "olimp@samara-7.ru",
+  "telegram": "https://t.me/stroigradsamara",
+  "max": "https://max.ru/join/fSV_tv8kpct-kOOT4182l5uCFDFlik2uJStSQOXOd2Q",
+  "warrantyYears": 5,
+  "teamExperienceYears": 10,
+  "yandexReviews": { "count": 38, "asOf": "февраль 2026" },
+  "slogans": {
+    "main": "Строим на совесть — служим долго",
+    "triad": "Надёжно · Качественно · В срок",
+    "unite": "Объединяем опыт и знания профессионалов разных отраслей",
+    "multi": "Многопрофильный сервис для вашего комфорта и безопасности",
+    "one": "Один подрядчик — решение большинства проблем"
+  },
+  "requisites": {
+    "legalName": null,
+    "inn": null,
+    "ogrn": null,
+    "legalAddress": null,
+    "sro": null
+  },
+  "workHours": null,
+  "officeAddress": null
+}
