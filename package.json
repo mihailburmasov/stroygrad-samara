@@ -11,7 +11,8 @@
     "check": "node scripts/check.mjs",
     "dev": "node scripts/serve.mjs",
     "images": "node scripts/optimize-images.mjs",
-    "assets": "node scripts/make-brand-assets.mjs"
+    "assets": "node scripts/make-brand-assets.mjs",
+    "art": "node scripts/make-art.mjs"
   },
   "devDependencies": {
     "sharp": "^0.35.4"

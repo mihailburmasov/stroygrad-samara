@@ -78,7 +78,6 @@
       "a": "Да. Заключаем договор на регулярную уборку и вывоз снега."
     }
   ],
-  "hero": null,
   "gallery": [
     "roof-01",
     "entr-03",
@@ -89,5 +88,12 @@
     "spectehnika-vyvoz-snega",
     "blagoustroystvo-territorij",
     "krovelnye-raboty"
-  ]
+  ],
+  "heroBg": {
+    "art": "collage-outdoor"
+  },
+  "plate": {
+    "t": "Сезонная подготовка зданий",
+    "s": "обслуживание МКД"
+  }
 }

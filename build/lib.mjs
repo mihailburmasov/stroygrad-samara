@@ -18,6 +18,7 @@ export const company = readJson('data/company.json');
 export const site = readJson('data/site.json');
 export const reviewsData = readJson('data/reviews.json');
 export const photos = readJson('data/photos.json');
+export const heroDims = readJson('data/hero.json');
 
 export const services = fs
   .readdirSync(path.join(ROOT, 'data/services'))
@@ -256,7 +257,7 @@ export function shell({ path: pth, title, description, body, ld = [], current = 
 <meta name="description" content="${esc(description)}">
 <link rel="canonical" href="${url}">
 ${noindex ? '<meta name="robots" content="noindex, follow">' : '<meta name="robots" content="index, follow, max-image-preview:large">'}
-<meta name="theme-color" content="#0e1116">
+<meta name="theme-color" content="#0a0a0b">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="ru_RU">
 <meta property="og:site_name" content="СТРОЙГРАД">
@@ -275,7 +276,7 @@ ${noindex ? '<meta name="robots" content="noindex, follow">' : '<meta name="robo
 <link rel="apple-touch-icon" href="${BASE}/apple-touch-icon.png">
 <link rel="preload" href="${BASE}/fonts/manrope-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="${BASE}/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
-${heroPreload ? `<link rel="preload" as="image" href="${heroPreload.href}" imagesrcset="${heroPreload.srcset}" imagesizes="${heroPreload.sizes}" fetchpriority="high">` : ''}
+${heroPreload ? `<link rel="preload" as="image" href="${heroPreload.href}"${heroPreload.srcset ? ` imagesrcset="${heroPreload.srcset}" imagesizes="${heroPreload.sizes}"` : ''} fetchpriority="high">` : ''}
 <link rel="stylesheet" href="${BASE}/css/style.css?v=${BUILD_DATE}">
 ${ldHtml}
 <!-- Яндекс.Метрика: номер счётчика указывается в public/js/config.js (METRIKA_ID) — скрипт подключится автоматически. Цели: form_submit, phone_click. -->
@@ -304,18 +305,36 @@ ${footer()}
 `;
 }
 
-export function pageHero({ h1, lead, crumbsHtml = '', actions = '', chips = [], media = '', eyebrow = '' }) {
-  return `<section class="phero on-dark">
-  <div class="wrap phero__grid${media ? ' phero__grid--media' : ''}">
-    <div class="phero__text">
+// ---------- первый экран: фон-арт из обложек клиента + тексты обложек ----------
+// spec: { art: 'roof' } — арт из data/hero.json;  { photo: 'asphalt-01' } — реальное фото;  pos — object-position
+export function heroBg(spec) {
+  let src, w, h, srcset = '';
+  if (spec.art) { const d = heroDims[spec.art]; if (!d) throw new Error('Нет hero-арта ' + spec.art); src = `${BASE}/img/hero/${spec.art}.webp`; w = d.w; h = d.h; srcset = `${BASE}/img/hero/${spec.art}-m.webp 800w, ${src} ${d.w}w`; }
+  else { const p = photo(spec.photo); src = `${BASE}/img/${p.id}.webp`; w = p.w; h = p.h; }
+  return {
+    html: `<div class="hero__bg" aria-hidden="true"><img src="${src}"${srcset ? ` srcset="${srcset}" sizes="(min-width: 900px) 70vw, 100vw"` : ''} width="${w}" height="${h}" alt="" fetchpriority="high" decoding="async"${spec.pos ? ` style="object-position:${spec.pos}"` : ''}></div>`,
+    preload: srcset ? { href: src, srcset, sizes: '(min-width: 900px) 70vw, 100vw' } : { href: src },
+  };
+}
+export const plateHtml = (t, sub = '') => `<p class="plate"><span class="plate__in"><span>${esc(t)}</span>${sub ? `<b>${esc(sub)}</b>` : ''}</span></p>`;
+export const sroHtml = (cls = '') => `<div class="sro ${cls}">${icon('shield')}<div><b>СРО, гарантия до ${company.warrantyYears} лет!</b><span>${esc(company.slogans.triad)}</span></div></div>`;
+
+export function pageHero({ h1, lead, crumbsHtml = '', actions = '', chips = [], bg, plate = null, eyebrow = '', tag = '', quality = null, sro = true, home = false }) {
+  return `<section class="hero ${home ? 'hero--home' : 'hero--page'} on-dark">
+  ${bg.html}
+  <div class="wrap">
+    <div class="hero__text">
       ${crumbsHtml}
+      ${plate ? plateHtml(plate.t, plate.s) : ''}
       ${eyebrow ? `<p class="eyebrow">${esc(eyebrow)}</p>` : ''}
       <h1>${esc(h1)}</h1>
+      ${tag ? `<p class="hero__tag">${esc(tag)}</p>` : ''}
       <p class="lead">${esc(lead)}</p>
       ${actions ? `<div class="hero__actions">${actions}</div>` : ''}
+      ${quality ? `<ul class="quality">${quality.map(q => `<li>${esc(q)}</li>`).join('')}</ul>` : ''}
       ${chips.length ? `<ul class="chips">${chips.map(c => `<li>${icon('check')}${esc(c)}</li>`).join('')}</ul>` : ''}
     </div>
-    ${media ? `<div class="phero__media">${media}</div>` : ''}
+    ${sro ? `<div class="hero__sro">${sroHtml()}</div>` : ''}
   </div>
 </section>`;
 }

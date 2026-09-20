@@ -79,7 +79,6 @@
       "a": "До 5 лет по договору."
     }
   ],
-  "hero": "asphalt-06",
   "gallery": [
     "asphalt-01",
     "asphalt-02",
@@ -95,5 +94,12 @@
     "asfaltirovanie-otmostka",
     "spectehnika-vyvoz-snega",
     "svarochnye-raboty"
-  ]
+  ],
+  "heroBg": {
+    "art": "collage-outdoor"
+  },
+  "plate": {
+    "t": "Благоустройство территорий",
+    "s": "дворы · дорожки · парковки"
+  }
 }

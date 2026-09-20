@@ -109,17 +109,27 @@
     form.elements.consent.addEventListener('change', function () { fieldErr(form, 'consent', ''); });
   });
 
-  // ---- фильтр портфолио ----
+  // ---- фильтр портфолио (первые фото сразу, остальные по кнопке) ----
   var filters = $$('[data-filter]');
   if (filters.length) {
     var items = $$('[data-filterable] > li');
+    var showAll = $('[data-showall]'), showWrap = $('[data-showall-wrap]');
+    var cur = 'all', expanded = false;
+    var apply = function () {
+      items.forEach(function (li) {
+        var match = cur === 'all' || li.getAttribute('data-cat') === cur;
+        li.hidden = !(match && (cur !== 'all' || expanded || !li.hasAttribute('data-more')));
+      });
+      if (showWrap) showWrap.hidden = !(cur === 'all' && !expanded);
+    };
     filters.forEach(function (b) {
       b.addEventListener('click', function () {
-        var f = b.getAttribute('data-filter');
+        cur = b.getAttribute('data-filter');
         filters.forEach(function (x) { var on = x === b; x.classList.toggle('is-active', on); x.setAttribute('aria-pressed', on ? 'true' : 'false'); });
-        items.forEach(function (li) { li.hidden = !(f === 'all' || li.getAttribute('data-cat') === f); });
+        apply();
       });
     });
+    if (showAll) showAll.addEventListener('click', function () { expanded = true; apply(); });
   }
 
   // ---- лайтбокс ----

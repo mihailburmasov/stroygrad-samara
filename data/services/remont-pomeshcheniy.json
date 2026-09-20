@@ -80,7 +80,6 @@
       "a": "Договор, смета, акты выполненных работ. Для организаций — комплект документов для отчётности."
     }
   ],
-  "hero": null,
   "gallery": [
     "entr-08",
     "entr-03",
@@ -90,5 +89,12 @@
     "remont-podezdov",
     "elektromontazhnye-raboty",
     "okna-i-dveri"
-  ]
+  ],
+  "heroBg": {
+    "art": "collage-interior"
+  },
+  "plate": {
+    "t": "Ремонт помещений",
+    "s": "косметический · капитальный"
+  }
 }

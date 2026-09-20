@@ -30,7 +30,8 @@ for (const f of files) {
   if (!/property="og:image"/.test(html)) errors.push(`${rel}: нет og:image`);
   if (/\{\{УТОЧНИТЬ/.test(html)) errors.push(`${rel}: остался плейсхолдер {{УТОЧНИТЬ}}`);
   // img alt/width/height
-  for (const m of html.matchAll(/<img\b[^>]*>/g)) {
+  const htmlNoBg = html.replace(/<div class="hero__bg" aria-hidden="true">[\s\S]*?<\/div>/g, ''); // декоративный фон: alt пустой намеренно
+  for (const m of htmlNoBg.matchAll(/<img\b[^>]*>/g)) {
     if (!/\balt="[^"]+"/.test(m[0])) errors.push(`${rel}: img без alt: ${m[0].slice(0, 80)}`);
     if (!/\bwidth="\d+"/.test(m[0]) || !/\bheight="\d+"/.test(m[0])) errors.push(`${rel}: img без width/height`);
   }
