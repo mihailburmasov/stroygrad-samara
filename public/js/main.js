@@ -34,6 +34,20 @@
     $$('a', menu).forEach(function (a) { a.addEventListener('click', function () { setMenu(false); }); });
   }
 
+  // ---- выпадающее меню «Услуги»: Esc закрывает, повторное наведение открывает снова ----
+  $$('[data-mega]').forEach(function (item) {
+    var undo = function () { item.classList.remove('is-dismissed'); };
+    item.addEventListener('mouseleave', undo);
+    item.addEventListener('mouseenter', undo);
+    item.addEventListener('focusout', function (e) { if (!item.contains(e.relatedTarget)) undo(); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape' || !item.matches(':hover, :has(:focus-visible)')) return;
+      item.classList.add('is-dismissed');
+      var link = item.firstElementChild;
+      if (link && item.contains(document.activeElement)) link.focus();
+    });
+  });
+
   // ---- cookie-уведомление ----
   var cookie = $('[data-cookie]');
   if (cookie) {

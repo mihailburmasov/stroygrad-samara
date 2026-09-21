@@ -184,8 +184,32 @@ const NAV = [
   { name: 'Контакты', path: '/contacts/' },
 ];
 
+// Выпадающая панель «Услуги» в шапке (десктоп): все услуги + быстрая связь
+function servicesMega(current) {
+  const items = services.map(s => `<li><a class="mega__item" href="${href(`/services/${s.slug}/`)}"><span class="mega__ic">${icon(s.icon)}</span><span class="mega__t">${esc(s.title)}</span></a></li>`).join('');
+  return `<div class="mega" id="mega-services">
+    <div class="wrap mega__grid">
+      <div class="mega__main">
+        <p class="mega__h">Все услуги</p>
+        <ul class="mega__list">${items}</ul>
+      </div>
+      <aside class="mega__aside">
+        <p class="mega__h">Нужна консультация?</p>
+        <p class="mega__note">Приедем на осмотр, замерим и составим смету. Работаем по договору, гарантия до ${company.warrantyYears} лет.</p>
+        <a class="mega__tel" href="tel:${phone0.tel}" data-goal="phone_click">${icon('phone')}${esc(phone0.display)}</a>
+        <a class="btn btn--primary btn--sm" href="${current === '/' ? '#zayavka' : href('/contacts/#zayavka')}">Рассчитать стоимость</a>
+        <a class="mega__all" href="${href('/services/')}">Каталог услуг ${icon('arrow')}</a>
+      </aside>
+    </div>
+  </div>`;
+}
+
 function header(current) {
-  const nav = NAV.map(n => `<a href="${href(n.path)}"${current === n.path ? ' aria-current="page"' : ''}>${n.name}</a>`).join('');
+  const nav = NAV.map(n => {
+    const cur = current === n.path ? ' aria-current="page"' : '';
+    if (n.path !== '/services/') return `<a href="${href(n.path)}"${cur}>${n.name}</a>`;
+    return `<div class="nav__item nav__item--sub" data-mega><a href="${href(n.path)}"${cur} aria-haspopup="true" aria-controls="mega-services">${n.name}${icon('chevron', 'nav__chev')}</a>${servicesMega(current)}</div>`;
+  }).join('');
   return `<header class="hdr on-dark" id="top">
   <div class="wrap hdr__row">
     <a class="logo" href="${href('/')}">${LOGO_MARK}<span class="logo__txt"><b>СТРОЙГРАД</b><small>строительная компания · Самара</small></span></a>
@@ -200,7 +224,9 @@ function header(current) {
   </div>
   <div class="mmenu" id="mmenu" hidden>
     <div class="wrap">
-      <nav aria-label="Мобильное меню">${NAV.map(n => `<a href="${href(n.path)}">${n.name}</a>`).join('')}</nav>
+      <nav aria-label="Мобильное меню">${NAV.map(n => (n.path !== '/services/'
+        ? `<a href="${href(n.path)}">${n.name}</a>`
+        : `<details class="mmenu__sub"><summary>${n.name}${icon('chevron', 'mmenu__chev')}</summary><div class="mmenu__subl"><a href="${href(n.path)}"><b>Все услуги</b></a>${services.map(s => `<a href="${href(`/services/${s.slug}/`)}">${esc(s.title)}</a>`).join('')}</div></details>`)).join('')}</nav>
       <div class="mmenu__contacts">${company.phones.map(p => phoneLink(p, 'mmenu__tel')).join('')}
         <div class="mmenu__msg"><a class="btn btn--ghost" href="${company.telegram}" target="_blank" rel="noopener">${icon('telegram')} Telegram</a><a class="btn btn--ghost" href="${company.max}" target="_blank" rel="noopener">MAX</a></div>
       </div>
