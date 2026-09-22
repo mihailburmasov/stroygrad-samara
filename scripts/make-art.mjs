@@ -49,15 +49,15 @@ async function collage(file, tiles, { W = 1400, H = 820, slant = 130, gap = 10 }
     const mask = Buffer.from(`<svg width="${tw}" height="${H}"><polygon points="${slant},0 ${tw},0 ${sw},${H} 0,${H}" fill="#fff"/></svg>`);
     const tile = await sharp(img).ensureAlpha().composite([{ input: mask, blend: 'dest-in' }]).png().toBuffer();
     comps.push({ input: tile, left: Math.max(x, 0) === x ? x : x, top: 0 });
-    // золотая линия по левой кромке среза
-    const line = Buffer.from(`<svg width="${tw}" height="${H}"><polyline points="${slant},0 0,${H}" stroke="#d9a227" stroke-width="3" fill="none" opacity=".9"/></svg>`);
+    // светлая линия по левой кромке среза
+    const line = Buffer.from(`<svg width="${tw}" height="${H}"><polyline points="${slant},0 0,${H}" stroke="#ffffff" stroke-width="3" fill="none" opacity=".85"/></svg>`);
     comps.push({ input: line, left: x, top: 0 });
   }
   // sharp не принимает отрицательный left → рисуем на увеличенном холсте и обрезаем
   const pad = slant;
   const canvas = sharp({ create: { width: W + pad * 2, height: H, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } });
   const shifted = comps.map(c => ({ ...c, left: c.left + pad }));
-  await canvas.composite(shifted).extract({ left: pad, top: 0, width: W, height: H }).flatten({ background: '#0a0a0b' }).webp({ quality: 80 }).toFile(path.join(OUT, file));
+  await canvas.composite(shifted).extract({ left: pad, top: 0, width: W, height: H }).flatten({ background: '#f4f7fb' }).webp({ quality: 80 }).toFile(path.join(OUT, file));
 }
 const C = name => ({ input: crop(name) });
 await collage('collage-home.webp', [

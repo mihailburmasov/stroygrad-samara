@@ -210,7 +210,7 @@ function header(current) {
     if (n.path !== '/services/') return `<a href="${href(n.path)}"${cur}>${n.name}</a>`;
     return `<div class="nav__item nav__item--sub" data-mega><a href="${href(n.path)}"${cur} aria-haspopup="true" aria-controls="mega-services">${n.name}${icon('chevron', 'nav__chev')}</a>${servicesMega(current)}</div>`;
   }).join('');
-  return `<header class="hdr on-dark" id="top">
+  return `<header class="hdr" id="top">
   <div class="wrap hdr__row">
     <a class="logo" href="${href('/')}">${LOGO_MARK}<span class="logo__txt"><b>СТРОЙГРАД</b><small>строительная компания · Самара</small></span></a>
     <nav class="nav" aria-label="Основное меню">${nav}</nav>
@@ -283,7 +283,7 @@ export function shell({ path: pth, title, description, body, ld = [], current = 
 <meta name="description" content="${esc(description)}">
 <link rel="canonical" href="${url}">
 ${noindex ? '<meta name="robots" content="noindex, follow">' : '<meta name="robots" content="index, follow, max-image-preview:large">'}
-<meta name="theme-color" content="#0a0a0b">
+<meta name="theme-color" content="#ffffff">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="ru_RU">
 <meta property="og:site_name" content="СТРОЙГРАД">
@@ -319,7 +319,7 @@ ${footer()}
   <a class="mbar__call" href="tel:${phone0.tel}" data-goal="phone_click">${icon('phone')}Позвонить</a>
   <a class="mbar__tg" href="${company.telegram}" target="_blank" rel="noopener">${icon('telegram')}Написать в Telegram</a>
 </div>
-<div class="cookie on-dark" data-cookie hidden role="region" aria-label="Уведомление об использовании cookie">
+<div class="cookie" data-cookie hidden role="region" aria-label="Уведомление об использовании cookie">
   <p>Сайт использует файлы cookie, необходимые для его работы, и данные, которые вы указываете в формах. Подробнее — в <a href="${href('/privacy/')}">политике конфиденциальности</a>.</p>
   <button class="btn btn--primary btn--sm" type="button" data-cookie-ok>Понятно</button>
 </div>
@@ -346,7 +346,7 @@ export const plateHtml = (t, sub = '') => `<p class="plate"><span class="plate__
 export const sroHtml = (cls = '') => `<div class="sro ${cls}">${icon('shield')}<div><b>СРО, гарантия до ${company.warrantyYears} лет!</b><span>${esc(company.slogans.triad)}</span></div></div>`;
 
 export function pageHero({ h1, lead, crumbsHtml = '', actions = '', chips = [], bg, plate = null, eyebrow = '', tag = '', quality = null, sro = true, home = false }) {
-  return `<section class="hero ${home ? 'hero--home' : 'hero--page'} on-dark">
+  return `<section class="hero ${home ? 'hero--home' : 'hero--page'}">
   ${bg.html}
   <div class="wrap">
     <div class="hero__text">

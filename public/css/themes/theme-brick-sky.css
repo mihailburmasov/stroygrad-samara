@@ -1,0 +1,44 @@
+/* Тема «Кирпич + небо» — теплее, «строительнее».
+   Бренд (ссылки, иконки, ярлыки) — кирпичный; акцент (кнопки, ключевые цифры) — небесно-голубой.
+   Как применить: скопируйте блок :root{...} из этого файла в css/style.css
+   поверх текущего блока :root — и запустите npm run build. */
+:root{
+  --white:#ffffff;
+  --paper:#fffdf9;
+  --paper-2:#fcf3e8;
+
+  --ink:#1f2937;
+  --muted:#5b6472;
+  --ink-invert:#ffffff;
+
+  --brand:#c2410c;
+  --brand-h:#9a330a;
+  --brand-soft:#fbe7dc;
+  --brand-line:#f3c7ac;
+
+  --accent:#0ea5e9;
+  --accent-h:#38bdf8;
+  --accent-ink:#0b2536;
+
+  --ok:#16a34a;
+  --ok-soft:#e6f7ee;
+  --ok-ink:#146c3a;
+
+  --ic-bg1:#fbe7dc; --ic-fg1:#c2410c;
+  --ic-bg2:#e0f2fe; --ic-fg2:#0284c7;
+  --ic-bg3:#e6f7ee; --ic-fg3:#15803d;
+  --ic-bg4:#f0ecfb; --ic-fg4:#7c3aed;
+  --ic-bg5:#fef6dc; --ic-fg5:#b45309;
+
+  --line:#efe2d3;
+  --dark:#3b2418;
+  --dark2:#4a2e1e;
+  --dark3:#5a3a26;
+  --dline:rgba(255,255,255,.14);
+  --dmuted:#d9c3b3;
+  --focus:#1b4dd8;
+
+  --radius:18px;
+  --shadow:0 1px 2px rgba(31,41,55,.05),0 10px 28px rgba(194,65,12,.10);
+  --wrap:1200px; --gut:20px;
+}

@@ -1,0 +1,43 @@
+/* Тема «Тил + янтарь» — спокойнее, «чисто и аккуратно».
+   Как применить: скопируйте блок :root{...} из этого файла в css/style.css
+   поверх текущего блока :root — и запустите npm run build. */
+:root{
+  --white:#ffffff;
+  --paper:#f7faf9;
+  --paper-2:#eef5f2;
+
+  --ink:#132a27;
+  --muted:#4f6864;
+  --ink-invert:#ffffff;
+
+  --brand:#0f766e;
+  --brand-h:#0b5c56;
+  --brand-soft:#e3f3f1;
+  --brand-line:#c3e4e0;
+
+  --accent:#f59e0b;
+  --accent-h:#ffb43a;
+  --accent-ink:#1a1305;
+
+  --ok:#16a34a;
+  --ok-soft:#e6f7ee;
+  --ok-ink:#146c3a;
+
+  --ic-bg1:#e3f3f1; --ic-fg1:#0f766e;
+  --ic-bg2:#fff1e3; --ic-fg2:#ea580c;
+  --ic-bg3:#e6f7ee; --ic-fg3:#15803d;
+  --ic-bg4:#f0ecfb; --ic-fg4:#7c3aed;
+  --ic-bg5:#fef6dc; --ic-fg5:#b45309;
+
+  --line:#d9e6e3;
+  --dark:#0f2a27;
+  --dark2:#123632;
+  --dark3:#164039;
+  --dline:rgba(255,255,255,.14);
+  --dmuted:#b9d3ce;
+  --focus:#1b4dd8;
+
+  --radius:18px;
+  --shadow:0 1px 2px rgba(19,42,39,.05),0 10px 28px rgba(15,118,110,.10);
+  --wrap:1200px; --gut:20px;
+}

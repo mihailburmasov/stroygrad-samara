@@ -127,7 +127,7 @@ function home() {
   </div>
 </section>`;
 
-  const why = `<section class="section section--dark on-dark" aria-labelledby="why-h">
+  const why = `<section class="section section--paper" aria-labelledby="why-h">
   <div class="wrap trustpair">
     <div>
       <h2 id="why-h" class="h2-bar">${esc(h.whyTitle)}</h2>
@@ -137,7 +137,7 @@ function home() {
     <div>
       ${sroHtml('sro--panel')}
       <ul class="minis">${h.minis.map(m => `<li>${esc(m)}</li>`).join('')}</ul>
-      <p style="color:var(--dmuted);margin-top:18px">${esc(h.whyNote)}</p>
+      <p style="color:var(--muted);margin-top:18px">${esc(h.whyNote)}</p>
     </div>
   </div>
 </section>`;
@@ -233,7 +233,7 @@ function servicePage(s) {
   const why = s.why && s.why.length ? s.why : site.whyDefault;
   const promise = s.promise && s.promise.length
     ? `<h3>Мы гарантируем</h3>${checklist(s.promise, 'checklist--gold')}` : '';
-  const whySec = `<section class="section section--dark on-dark" aria-labelledby="why-h"><div class="wrap why__grid">
+  const whySec = `<section class="section section--paper" aria-labelledby="why-h"><div class="wrap why__grid">
     <div><h2 id="why-h" class="h2-bar">Почему выбирают нас?</h2>${checklist(why, 'checklist--lg checklist--gold')}</div>
     <div class="why__side">${sroHtml('sro--panel')}<h3>Сроки</h3><p>${esc(s.term)}</p><h3>Гарантия</h3><p>${esc(s.warranty)}</p>${promise}</div>
   </div></section>`;
@@ -245,7 +245,7 @@ function servicePage(s) {
 
   const faq = `<section class="section section--paper" aria-labelledby="faq-h"><div class="wrap wrap--narrow"><div class="sec-head"><h2 id="faq-h">Вопросы и ответы</h2></div>${faqHtml(s.faq)}</div></section>`;
 
-  const closing = `<section class="closing on-dark" aria-label="${esc(s.closing || company.slogans.main)}"><div class="wrap"><p class="closing__t">${esc(s.closing || company.slogans.main)}</p><p class="closing__s" aria-hidden="true">★ ★ ★ ★ ★</p></div></section>`;
+  const closing = `<section class="closing" aria-label="${esc(s.closing || company.slogans.main)}"><div class="wrap"><p class="closing__t">${esc(s.closing || company.slogans.main)}</p><p class="closing__s" aria-hidden="true">★ ★ ★ ★ ★</p></div></section>`;
 
   const related = `<section class="section" aria-labelledby="rel-h"><div class="wrap"><div class="sec-head"><h2 id="rel-h">Смежные услуги</h2></div><div class="grid grid--3">${s.related.map(r => serviceCard(svcBySlug[r])).join('')}</div></div></section>`;
 
@@ -288,7 +288,7 @@ function ukPage() {
   const rv = reviews.filter(r => /ТСЖ|(^|[\s,.(])УК([\s,.)]|$)|МКД|многоквартирн/.test(r.text)).slice(0, 3);
   const rvHtml = `<section class="section section--paper" aria-labelledby="rv-h"><div class="wrap"><div class="sec-head"><h2 id="rv-h">Отзывы управляющих компаний и ТСЖ</h2><p class="lead">Реальные отзывы с Яндекс Бизнеса.</p></div><div class="grid grid--3">${rv.map(reviewCard).join('')}</div></div></section>`;
   const faq = `<section class="section" aria-labelledby="faq-h"><div class="wrap wrap--narrow"><div class="sec-head"><h2 id="faq-h">Вопросы и ответы</h2></div>${faqHtml(u.faq)}</div></section>`;
-  const body = hero + needs + svcs + docs + rvHtml + faq + formHtml({ title: 'Запросить коммерческое предложение', lead: 'Опишите задачу или объекты — подготовим предложение и договоримся об осмотре.', subject: 'КП для УК/ТСЖ', withPortfolio: true, dark: true });
+  const body = hero + needs + svcs + docs + rvHtml + faq + formHtml({ title: 'Запросить коммерческое предложение', lead: 'Опишите задачу или объекты — подготовим предложение и договоримся об осмотре.', subject: 'КП для УК/ТСЖ', withPortfolio: true });
   write(pth, shell({
     path: pth, title: u.metaTitle, description: u.metaDescription, body, current: pth, heroPreload: bg.preload,
     ld: [crumbsLd(items), faqLd(u.faq)],
@@ -342,7 +342,7 @@ function aboutPage() {
   </div></section>`;
   const work = `<section class="section" aria-labelledby="work-h"><div class="wrap"><div class="sec-head"><h2 id="work-h">${esc(a.workTitle)}</h2><p class="lead">${esc(company.slogans.triad)}</p></div>
     <ol class="steps steps--3">${a.values.map((v, i) => `<li class="step"><span class="step__n">${i + 1}</span><h3>${esc(v.title)}</h3><p>${esc(v.text)}</p></li>`).join('')}</ol></div></section>`;
-  const slog = `<section class="section section--dark on-dark"><div class="wrap"><ul class="slogans">${['main', 'unite', 'multi', 'one'].map(k => `<li>${esc(company.slogans[k])}</li>`).join('')}</ul></div></section>`;
+  const slog = `<section class="section section--paper"><div class="wrap"><ul class="slogans">${['main', 'unite', 'multi', 'one'].map(k => `<li>${esc(company.slogans[k])}</li>`).join('')}</ul></div></section>`;
   const rvs = `<section class="section" id="otzyvy" aria-labelledby="rv-h"><div class="wrap"><div class="sec-head"><h2 id="rv-h">Отзывы клиентов</h2><p class="lead">На Яндекс Бизнесе — ${company.yandexReviews.count} отзывов (по состоянию на ${company.yandexReviews.asOf}). Ниже — часть из них, тексты перенесены без изменений по смыслу. Многие отзывы оставлены под прежним названием компании — «Олимп».</p></div>
     <div class="grid grid--3 masonry">${reviews.map(reviewCard).join('')}</div></div></section>`;
   const body = hero + hist + team + work + slog + rvs + formHtml({ title: 'Задать вопрос или запросить документы', lead: 'Копии СРО, лицензий и портфолио с адресами объектов предоставим по запросу.', subject: 'Вопрос со страницы «О компании»', withPortfolio: true });
