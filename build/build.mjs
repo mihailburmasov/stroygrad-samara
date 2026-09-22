@@ -240,7 +240,7 @@ function servicePage(s) {
 
   const rv = reviewsFor(s.slug).slice(0, 3);
   const rvHtml = rv.length
-    ? `<section class="section" aria-labelledby="rv-h"><div class="wrap"><div class="sec-head"><h2 id="rv-h">Отзывы клиентов</h2><p class="lead">Реальные отзывы с Яндекс Бизнеса. Часть оставлена под прежним названием компании — «Олимп».</p></div><div class="grid grid--${rv.length === 1 ? '1' : rv.length === 2 ? '2' : '3'}">${rv.map(reviewCard).join('')}</div></div></section>`
+    ? `<section class="section" aria-labelledby="rv-h"><div class="wrap"><div class="sec-head"><h2 id="rv-h">Отзывы клиентов</h2><p class="lead">Реальные отзывы с Яндекс Бизнеса.</p></div><div class="grid grid--${rv.length === 1 ? '1' : rv.length === 2 ? '2' : '3'}">${rv.map(reviewCard).join('')}</div></div></section>`
     : '';
 
   const faq = `<section class="section section--paper" aria-labelledby="faq-h"><div class="wrap wrap--narrow"><div class="sec-head"><h2 id="faq-h">Вопросы и ответы</h2></div>${faqHtml(s.faq)}</div></section>`;
@@ -343,7 +343,7 @@ function aboutPage() {
   const work = `<section class="section" aria-labelledby="work-h"><div class="wrap"><div class="sec-head"><h2 id="work-h">${esc(a.workTitle)}</h2><p class="lead">${esc(company.slogans.triad)}</p></div>
     <ol class="steps steps--3">${a.values.map((v, i) => `<li class="step"><span class="step__n">${i + 1}</span><h3>${esc(v.title)}</h3><p>${esc(v.text)}</p></li>`).join('')}</ol></div></section>`;
   const slog = `<section class="section section--paper"><div class="wrap"><ul class="slogans">${['main', 'unite', 'multi', 'one'].map(k => `<li>${esc(company.slogans[k])}</li>`).join('')}</ul></div></section>`;
-  const rvs = `<section class="section" id="otzyvy" aria-labelledby="rv-h"><div class="wrap"><div class="sec-head"><h2 id="rv-h">Отзывы клиентов</h2><p class="lead">На Яндекс Бизнесе — ${company.yandexReviews.count} отзывов (по состоянию на ${company.yandexReviews.asOf}). Ниже — часть из них, тексты перенесены без изменений по смыслу. Многие отзывы оставлены под прежним названием компании — «Олимп».</p></div>
+  const rvs = `<section class="section" id="otzyvy" aria-labelledby="rv-h"><div class="wrap"><div class="sec-head"><h2 id="rv-h">Отзывы клиентов</h2><p class="lead">На Яндекс Бизнесе — ${company.yandexReviews.count} отзывов (по состоянию на ${company.yandexReviews.asOf}). Ниже — часть из них, тексты перенесены без изменений по смыслу.</p></div>
     <div class="grid grid--3 masonry">${reviews.map(reviewCard).join('')}</div></div></section>`;
   const body = hero + hist + team + work + slog + rvs + formHtml({ title: 'Задать вопрос или запросить документы', lead: 'Копии СРО, лицензий и портфолио с адресами объектов предоставим по запросу.', subject: 'Вопрос со страницы «О компании»', withPortfolio: true });
   write(pth, shell({ path: pth, title: a.metaTitle, description: a.metaDescription, body, current: pth, ld: [crumbsLd(items), orgLd()], heroPreload: bg.preload }), { priority: '0.7' });
