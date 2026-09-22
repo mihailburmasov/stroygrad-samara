@@ -49,10 +49,10 @@
     "object": "Комплексные решения для вашего объекта"
   },
   "requisites": {
-    "legalName": null,
-    "inn": null,
-    "ogrn": null,
-    "legalAddress": null,
+    "legalName": "ООО «СТРОЙГРАД»",
+    "inn": "6316293361",
+    "ogrn": "1256300027532",
+    "legalAddress": "443013, г.о. Самара, Московское шоссе, д. 4, к. 4, офис 405",
     "sro": null
   },
   "workHours": null,
