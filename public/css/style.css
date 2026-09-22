@@ -204,7 +204,13 @@ ul,ol{margin:0;padding:0}
   .hero{padding:56px 0 84px}
   .hero__bg img{width:70%}
   .hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,var(--paper) 0%,var(--paper) 36%,rgba(244,247,251,.82) 44%,rgba(244,247,251,.1) 60%,transparent 72%)}
-  .hero__sro{position:absolute;right:var(--gut);bottom:-40px}
+}
+/* «плавающий» бейдж СРО — только когда в высоту точно есть место (большие
+   мониторы); на типичных ноутбучных 1280×720–1440×900 текст hero часто
+   выше окна, и бейдж, привязанный к низу текста, вылезал за край экрана —
+   там он просто встаёт в обычный поток под текстом, как на мобильных */
+@media (min-width:900px) and (min-height:900px){
+  .hero__sro{position:absolute;right:var(--gut);bottom:16px}
 }
 .hero__sro{margin-top:22px}
 /* плашка над заголовком: тонкая линия слева, без «таблички» */
