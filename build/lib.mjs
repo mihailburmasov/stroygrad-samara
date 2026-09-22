@@ -336,7 +336,7 @@ ${footer()}
 export function heroBg(spec) {
   let src, w, h, srcset = '';
   if (spec.art) { const d = heroDims[spec.art]; if (!d) throw new Error('Нет hero-арта ' + spec.art); src = `${BASE}/img/hero/${spec.art}.webp`; w = d.w; h = d.h; srcset = `${BASE}/img/hero/${spec.art}-m.webp 800w, ${src} ${d.w}w`; }
-  else { const p = photo(spec.photo); src = `${BASE}/img/${p.id}.webp`; w = p.w; h = p.h; }
+  else { const p = photo(spec.photo); src = `${BASE}/img/${p.id}.webp`; w = p.w; h = p.h; srcset = `${BASE}/img/${p.id}-sm.webp ${p.sw}w, ${src} ${p.w}w`; }
   return {
     html: `<div class="hero__bg" aria-hidden="true"><img src="${src}"${srcset ? ` srcset="${srcset}" sizes="(min-width: 900px) 70vw, 100vw"` : ''} width="${w}" height="${h}" alt="" fetchpriority="high" decoding="async"${spec.pos ? ` style="object-position:${spec.pos}"` : ''}></div>`,
     preload: srcset ? { href: src, srcset, sizes: '(min-width: 900px) 70vw, 100vw' } : { href: src },

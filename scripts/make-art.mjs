@@ -1,5 +1,8 @@
-// Hero-арт из рекламных обложек клиента (папка «Фото обложки»).
-// Вырезаем участки БЕЗ текста, увеличиваем и собираем диагональные коллажи в стиле обложек.
+// Hero-арт из рекламных обложек клиента (папка «Фото обложки») + коллажи из реальных
+// фото объектов (public/img). Коллажи и часть страниц-каталогов используют реальные фото —
+// они не апскейлятся, без риска зацепить текст/логотип с исходных рекламных макетов и
+// не повторяются между страницами. AI-арт из обложек оставлен только там, где реальных фото
+// по теме нет (facade, spec) или он даёт нужный «премиальный» акцент (roof, roof2, lift, doors).
 // Запуск: npm run art  (нужен npm install; исходники — на диске клиента)
 import sharp from 'sharp';
 import fs from 'fs';
@@ -9,36 +12,39 @@ const SRC = 'D:/Claude/Создание сайтов/Клиенты/Юра Са�
 const OUT = path.resolve('public/img/hero');
 fs.mkdirSync(OUT, { recursive: true });
 const F = {
-  elec: '2365ed22-af10-450d-830b-26caef56285f.jpg',
-  roof: '8c767d51-8628-451f-8a82-f4f7a59c1876.jpg',
   spec: '9efbb6a3-13ed-4075-9474-b97f4170446c.jpg',
   facade: 'b330353b-48d1-464c-9772-a44bbb7c4bcc.jpg',
   doors: 'b8cc5ccb-4bd6-4b51-b13b-a1ec9e1a22f7.jpg',
   collage: 'c91293c9-4ba6-4dd8-9816-abf49bcf3719.jpg',
   lift: 'e4c2b3da-315f-45d3-8c46-089e58fe5476.jpg',
-  weld: 'ef6274e7-7894-4d8b-bf7e-b5711c3d821c.jpg',
+  roof: '8c767d51-8628-451f-8a82-f4f7a59c1876.jpg',
 };
-// name: [file, left, top, width, height]  — прямоугольники без текста
+// name: [file, left, top, width, height] — прямоугольники без текста, логотипов и бликов
 const CROPS = {
-  roof: ['collage', 0, 0, 640, 400],       // кровельщики на закате, кран
-  roof2: ['roof', 0, 815, 500, 355],       // кровельщик на скатной кровле
-  facade: ['facade', 575, 0, 449, 580],    // работы на фасаде с лесов
-  weld: ['weld', 600, 20, 424, 520],       // сварщик
-  elec: ['elec', 600, 0, 424, 470],        // электрик у щита
+  roof: ['collage', 0, 0, 640, 315],       // кровельщики на закате, кран (ниже — золотой шеврон логотипа, обрезан)
+  roof2: ['roof', 0, 885, 500, 270],       // кровельщик на скатной кровле (выше — золотая линия и текст, обрезаны)
+  facade: ['facade', 640, 0, 384, 580],    // работы на фасаде с лесов (левее — блики-звёзды логотипа, обрезаны)
   doors: ['doors', 600, 0, 424, 430],      // окна
   lift: ['lift', 640, 0, 384, 490],        // лифт
-  spec: ['spec', 570, 20, 454, 440],       // экскаватор-погрузчик
+  spec: ['spec', 570, 20, 454, 440],       // экскаватор-погрузчик — небо осветляем ниже
 };
+// лёгкая коррекция яркости отдельных кадров (небо в этом кадре пасмурное)
+const BRIGHTEN = { spec: 1.22 };
 const crop = (name) => { const [f, left, top, width, height] = CROPS[name]; return sharp(path.join(SRC, F[f])).extract({ left, top, width, height }); };
 
 // одиночные hero-картинки: увеличение + резкость (источники — небольшие вырезки
 // из обложек 1024×1536, поэтому апскейл неизбежен; берём максимум резкости без ореолов)
 for (const name of Object.keys(CROPS)) {
   const [, , , w] = CROPS[name];
-  await crop(name).resize({ width: Math.round(Math.max(w * 2.35, 950)), kernel: 'lanczos3' }).sharpen({ sigma: 0.8 }).webp({ quality: 84 }).toFile(path.join(OUT, `${name}.webp`));
+  let img = crop(name).resize({ width: Math.round(Math.max(w * 2.35, 950)), kernel: 'lanczos3' }).sharpen({ sigma: 0.8 });
+  if (BRIGHTEN[name]) img = img.modulate({ brightness: BRIGHTEN[name] });
+  await img.webp({ quality: 84 }).toFile(path.join(OUT, `${name}.webp`));
 }
 
-// диагональные коллажи: полосы со срезом, золотые линии между ними
+// реальные фото объектов (public/img) как плитки коллажей — свои, не апскейленные, дневной свет
+const P = id => ({ input: sharp(path.resolve('public/img', id + '.webp')) });
+
+// диагональные коллажи: полосы со срезом, светлые линии между ними
 async function collage(file, tiles, { W = 1500, H = 878, slant = 139, gap = 11 } = {}) {
   const n = tiles.length;
   const sw = Math.round((W + slant - (n - 1) * gap) / n);
@@ -60,25 +66,42 @@ async function collage(file, tiles, { W = 1500, H = 878, slant = 139, gap = 11 }
   const shifted = comps.map(c => ({ ...c, left: c.left + pad }));
   await canvas.composite(shifted).extract({ left: pad, top: 0, width: W, height: H }).flatten({ background: '#f4f7fb' }).webp({ quality: 84 }).toFile(path.join(OUT, file));
 }
-const C = name => ({ input: crop(name) });
+
+// каждая плитка — свой снимок; между всеми коллажами и одиночными фото служб фото не повторяются
 await collage('collage-home.webp', [
-  { input: crop('roof'), pos: 'right' }, { input: crop('spec') }, { input: crop('facade') }, { input: crop('elec') }, { input: crop('lift') },
+  { input: crop('roof'), pos: 'left' },
+  P('asphalt-05'),
+  P('doors-04'),
+  P('elec-07'),
+  P('weld-01'),
 ]);
 await collage('collage-services.webp', [
-  { input: crop('doors') }, { input: crop('lift') }, { input: crop('roof2') }, { input: crop('spec') }, { input: crop('weld') },
+  { input: crop('lift') },
+  P('roof-11'),
+  P('weld-03'),
+  P('asphalt-13'),
+  P('doors-06'),
 ]);
 await collage('collage-uk.webp', [
-  { input: crop('facade') }, { input: crop('roof'), pos: 'right' }, { input: crop('lift') }, { input: crop('doors') },
+  P('roof-08'),
+  P('doors-08'),
+  P('asphalt-21'),
+  P('elec-03'),
 ]);
-await collage('collage-interior.webp', [
-  { input: crop('lift') }, { input: crop('doors') }, { input: crop('elec') }, { input: crop('roof2') },
+await collage('collage-about.webp', [
+  P('roof-05'),
+  P('elec-04'),
+  P('asphalt-08'),
+  P('doors-11'),
 ]);
-await collage('collage-outdoor.webp', [
-  { input: crop('spec') }, { input: crop('roof'), pos: 'right' }, { input: crop('facade') }, { input: crop('weld') },
+await collage('collage-contacts.webp', [
+  P('roof-02'),
+  P('elec-10'),
+  P('weld-06'),
+  P('asphalt-14'),
 ]);
-// коллаж портфолио — из реальных фото объектов (public/img)
-const P = id => ({ input: sharp(path.resolve('public/img', id + '.webp')) });
-await collage('collage-portfolio.webp', [P('roof-03'), P('lift-01'), P('asphalt-01'), P('doors-01'), P('entr-04')].map(t => ({ input: t.input })));
+await collage('collage-portfolio.webp', [P('roof-03'), P('lift-01'), P('asphalt-01'), P('doors-01'), P('entr-04')]);
+
 // облегчённые версии для телефонов
 for (const f of fs.readdirSync(OUT).filter(f => !f.endsWith('-m.webp'))) {
   await sharp(path.join(OUT, f)).resize({ width: 840 }).webp({ quality: 72 }).toFile(path.join(OUT, f.replace('.webp', '-m.webp')));

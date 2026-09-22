@@ -40,10 +40,10 @@ const HERO = {
   services: { art: 'collage-services' },
   uk: { art: 'collage-uk' },
   portfolio: { art: 'collage-portfolio' },
-  about: { art: 'roof' },
-  contacts: { art: 'roof2' },
+  about: { art: 'collage-about' },
+  contacts: { art: 'collage-contacts' },
   legal: { art: 'doors' },
-  nf: { art: 'weld' },
+  nf: { photo: 'weld-04' },
 };
 
 // категории портфолио
