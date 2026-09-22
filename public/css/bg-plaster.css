@@ -122,8 +122,54 @@
 .bg-plaster .card .svc__icon,
 .bg-plaster .reason__ic{ filter:brightness(.96); }
 
-/* печать — фактура ни к чему */
+/* ---------- первый экран: без белой плашки под текстом, текст прямо на фото ----------
+   Плашка визуально спорила с фактурным фоном и выглядела «приклеенной». Вместо неё —
+   фото тонировано в тёмно-синий бренда (не чёрный), текст светлый, как до перекраски
+   в светлую палитру, только в новом синем тоне вместо чёрно-золотого. */
+.bg-plaster .hero__text{
+  max-width:640px;
+  background:none;
+  border-radius:0;
+  padding:0;
+  box-shadow:none;
+}
+.bg-plaster .hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  background:linear-gradient(180deg,rgba(15,34,54,.78) 0%,rgba(15,34,54,.92) 100%);
+}
+@media (min-width:900px){
+  .bg-plaster .hero::after{
+    background:
+      linear-gradient(90deg,var(--dark) 0%,var(--dark) 28%,rgba(15,34,54,.86) 44%,rgba(15,34,54,.35) 66%,rgba(15,34,54,.14) 100%),
+      linear-gradient(0deg,var(--dark) 0,transparent 26%);
+  }
+}
+.bg-plaster .hero h1,
+.bg-plaster .hero__tag{ color:#ffffff; }
+.bg-plaster .hero .lead{ color:#e6ecf2; } /* светлее --dmuted: измерено по реальным пикселям, с запасом от локальных светлых пятен фото */
+.bg-plaster .hero .plate__in{ color:#ffffff; }
+.bg-plaster .hero .plate__in b{ color:#ffd9ad; }
+.bg-plaster .hero .quality{ color:#ffffff; }
+.bg-plaster .hero .quality li+li::before{ color:var(--accent); }
+.bg-plaster .hero .btn--ghost{
+  border-color:var(--dline);
+  color:#ffffff;
+  background:rgba(255,255,255,.08);
+}
+.bg-plaster .hero .btn--ghost:hover{ background:rgba(255,255,255,.16); border-color:rgba(255,255,255,.4); }
+
+/* печать — фактура ни к чему; браузеры фоновые картинки не печатают по умолчанию,
+   но hero__bg — это <img>, а не фон, его нужно скрыть отдельно и вернуть тёмный текст */
 @media print{
   .bg-plaster,
   .bg-plaster *{ background-image:none !important; }
+  .bg-plaster .hero__bg{ display:none; }
+  .bg-plaster .hero h1,
+  .bg-plaster .hero__tag,
+  .bg-plaster .hero .plate__in,
+  .bg-plaster .hero .quality{ color:var(--ink); }
+  .bg-plaster .hero .lead{ color:var(--muted); }
 }
