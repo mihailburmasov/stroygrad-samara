@@ -1,0 +1,129 @@
+/* Фактурный фон главной страницы. Область действия — только .bg-plaster
+   на <body> (подключается вместе с этим файлом только в index.html).
+   Откат: удалить одну строку <link> и один класс на <body> — остальные
+   21 страница используют только css/style.css и не затронуты.
+
+   Меняем только: фон страниц/секций, фактуру, цвет плашек и их границ,
+   разделители, силу теней, чуть более тёмный --muted (нужно для AA на
+   плотном сером фоне). Синий, оранжевый, подложки иконок (кроме лёгкого
+   притемнения на 3–4%), тексты, структура и разметка — не трогаем. */
+
+.bg-plaster{
+  /* ---------- палитра фона: «Цемент» (активна) ---------- */
+  --bg-1:#f0efec;
+  --bg-2:#e8e6e1;
+  --bg-3:#dedbd4;
+  --line:#d3cfc7;
+  --shadow:0 1px 2px rgba(40,36,30,.06), 0 12px 28px rgba(40,36,30,.10);
+
+  /* ---------- запасной тон «Бетон» — раскомментировать вместо «Цемента» ----------
+  --bg-1:#eef0f3; --bg-2:#e5e8ec; --bg-3:#d9dde3; --line:#ccd2da;
+  */
+
+  /* ---------- запасной тон «Песок» ----------
+  --bg-1:#f3f0e9; --bg-2:#ebe6db; --bg-3:#e0d9cb; --line:#d6cec0;
+  */
+
+  /* ---------- плашки: «Молочный» (активен, пара к «Цементу») ---------- */
+  --card:#fbfaf7;
+  --card-line:#e4e0d8;
+  --card-hover:#ffffff;
+
+  /* ---------- запасные плашки ----------
+  «Чисто белый» — строго и технично:
+  --card:#ffffff; --card-line:#e7e3db;
+  «Бумажный» — спокойный, каталожный, под B2B:
+  --card:#f7f5f0; --card-line:#e0dbd1;
+  «Голубоватый» — в тон бренду, брать с фоном «Бетон»:
+  --card:#fafcff; --card-line:#dde5f0;
+  */
+
+  /* приглушённый текст на плотном сером фоне тем же серым не проходит AA —
+     этот оттенок темнее глобального --muted на 1.5–2 ступени */
+  --muted:#4f5f72;
+
+  background:var(--bg-2);
+}
+
+/* ---------- текстура: три слоя на чистом CSS, без внешних файлов ---------- */
+.bg-plaster{
+  /* зерно штукатурки — по умолчанию на всех текстурных секциях */
+  --grain:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='160'%20height='160'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.85'%20numOctaves='3'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20type='saturate'%20values='0'/%3E%3C/filter%3E%3Crect%20width='160'%20height='160'%20filter='url(%23n)'%20opacity='0.28'/%3E%3C/svg%3E");
+  /* разводы кельмы — только hero и форма */
+  --trowel:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='600'%20height='600'%3E%3Cfilter%20id='t'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.014'%20numOctaves='4'%20seed='7'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20type='saturate'%20values='0'/%3E%3C/filter%3E%3Crect%20width='600'%20height='600'%20filter='url(%23t)'%20opacity='0.16'/%3E%3C/svg%3E");
+  /* чертёжная сетка — только светлый вариант (для тёмного блока УК/ТСЖ своя, ниже) */
+  --grid:repeating-linear-gradient(0deg,rgba(20,32,46,.045) 0 1px,transparent 1px 40px),
+         repeating-linear-gradient(90deg,rgba(20,32,46,.045) 0 1px,transparent 1px 40px);
+  --grid-dark:repeating-linear-gradient(0deg,rgba(255,255,255,.05) 0 1px,transparent 1px 40px),
+              repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 1px,transparent 1px 40px);
+}
+
+/* зерно — на всех текстурных секциях главной */
+.bg-plaster .hero,
+.bg-plaster .reasons,
+.bg-plaster #uslugi,
+.bg-plaster .section:has(#steps-h),
+.bg-plaster .section:has(#port-h),
+.bg-plaster .section:has(#why-h),
+.bg-plaster .section:has(#rv-h),
+.bg-plaster #zayavka,
+.bg-plaster .section:has(#cont-h){
+  background-image:var(--grain);
+  background-size:160px 160px;
+}
+/* разводы кельмы поверх зерна — только hero и форма заявки */
+.bg-plaster .hero,
+.bg-plaster #zayavka{
+  background-image:var(--grain),var(--trowel);
+  background-size:160px 160px,600px 600px;
+}
+
+/* ритм тона секций сверху вниз — важнее самой фактуры, даёт странице объём */
+.bg-plaster .hero{ background-color:var(--bg-3); }
+.bg-plaster .reasons{ background-color:var(--bg-1); }
+.bg-plaster #uslugi{ background-color:var(--bg-2); }
+.bg-plaster .section:has(#steps-h){ background-color:var(--bg-1); }
+.bg-plaster .section:has(#port-h){ background-color:var(--bg-2); }
+.bg-plaster .section:has(#why-h){ background-color:var(--bg-3); }
+.bg-plaster .section:has(#rv-h){ background-color:var(--bg-1); }
+.bg-plaster #zayavka{ background-color:var(--bg-3); }
+.bg-plaster .section:has(#cont-h){ background-color:var(--bg-2); }
+
+/* блок «Управляющим компаниям и ТСЖ» — цвет (тёмно-синий) не трогаем,
+   это единственный намеренно тёмный акцентный блок сайта; зерно на тёмном
+   не видно, поэтому кладём только миллиметровку — тонкий намёк на смету */
+.bg-plaster .uk{ background-image:var(--grid-dark); }
+
+/* ---------- плашки: светлее фона, поверх зерна, без своей текстуры ---------- */
+.bg-plaster .card,
+.bg-plaster .reason,
+.bg-plaster .step,
+.bg-plaster .sro,
+.bg-plaster .checklist--lg li,
+.bg-plaster .checklist--gold li,
+.bg-plaster .minis li{
+  background-color:var(--card);
+  background-image:none;
+  border:1px solid var(--card-line);
+  box-shadow:var(--shadow);
+}
+.bg-plaster .section--paper .card,
+.bg-plaster .on-dark .checklist--gold li{ border-color:var(--card-line); }
+.bg-plaster .reason{ border-radius:var(--radius); padding:24px 22px; }
+
+/* наведение — плашка «подсвечивается» до чисто белого и слегка всплывает */
+.bg-plaster .svc:hover{
+  background-color:var(--card-hover);
+  border-color:#cfd9e8;
+  box-shadow:0 16px 38px rgba(40,36,30,.14);
+}
+
+/* цветные подложки иконок остаются как есть — чуть притемняем, чтобы не «светились» на молочном */
+.bg-plaster .card .svc__icon,
+.bg-plaster .reason__ic{ filter:brightness(.96); }
+
+/* печать — фактура ни к чему */
+@media print{
+  .bg-plaster,
+  .bg-plaster *{ background-image:none !important; }
+}

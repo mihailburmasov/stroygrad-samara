@@ -271,7 +271,7 @@ function footer() {
 }
 
 // ---------- оболочка страницы ----------
-export function shell({ path: pth, title, description, body, ld = [], current = pth, ogImage = '/og.jpg', noindex = false, heroPreload = null }) {
+export function shell({ path: pth, title, description, body, ld = [], current = pth, ogImage = '/og.jpg', noindex = false, heroPreload = null, extraCss = null, bodyClass = '' }) {
   const url = abs(pth);
   const ldHtml = ld.map(o => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, '\\u003c')}</script>`).join('\n');
   return `<!doctype html>
@@ -303,11 +303,11 @@ ${noindex ? '<meta name="robots" content="noindex, follow">' : '<meta name="robo
 <link rel="preload" href="${BASE}/fonts/manrope-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="${BASE}/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
 ${heroPreload ? `<link rel="preload" as="image" href="${heroPreload.href}"${heroPreload.srcset ? ` imagesrcset="${heroPreload.srcset}" imagesizes="${heroPreload.sizes}"` : ''} fetchpriority="high">` : ''}
-<link rel="stylesheet" href="${BASE}/css/style.css?v=${BUILD_DATE}">
+<link rel="stylesheet" href="${BASE}/css/style.css?v=${BUILD_DATE}">${extraCss ? `\n<link rel="stylesheet" href="${BASE}${extraCss}?v=${BUILD_DATE}">` : ''}
 ${ldHtml}
 <!-- Яндекс.Метрика: номер счётчика указывается в public/js/config.js (METRIKA_ID) — скрипт подключится автоматически. Цели: form_submit, phone_click. -->
 </head>
-<body>
+<body${bodyClass ? ` class="${bodyClass}"` : ''}>
 <a class="skip" href="#main">Перейти к содержимому</a>
 ${spriteSvg()}
 ${header(current)}
