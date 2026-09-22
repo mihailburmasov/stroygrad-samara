@@ -271,7 +271,7 @@ function footer() {
 }
 
 // ---------- оболочка страницы ----------
-export function shell({ path: pth, title, description, body, ld = [], current = pth, ogImage = '/og.jpg', noindex = false, heroPreload = null, extraCss = null, bodyClass = '' }) {
+export function shell({ path: pth, title, description, body, ld = [], current = pth, ogImage = '/og.jpg', noindex = false, heroPreload = null, extraCss = '/css/bg-plaster.css', bodyClass = 'bg-plaster' }) {
   const url = abs(pth);
   const ldHtml = ld.map(o => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, '\\u003c')}</script>`).join('\n');
   return `<!doctype html>

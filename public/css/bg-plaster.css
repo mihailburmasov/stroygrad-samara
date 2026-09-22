@@ -1,7 +1,6 @@
-/* Фактурный фон главной страницы. Область действия — только .bg-plaster
-   на <body> (подключается вместе с этим файлом только в index.html).
-   Откат: удалить одну строку <link> и один класс на <body> — остальные
-   21 страница используют только css/style.css и не затронуты.
+/* Фактурный фон и hero без плашки — на всех страницах. Управляется классом
+   .bg-plaster на <body> (подключается вместе с этим файлом в shell()).
+   Откат: удалить одну строку <link> и один класс на <body> в build/lib.mjs.
 
    Меняем только: фон страниц/секций, фактуру, цвет плашек и их границ,
    разделители, силу теней, чуть более тёмный --muted (нужно для AA на
@@ -58,36 +57,29 @@
               repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 1px,transparent 1px 40px);
 }
 
-/* зерно — на всех текстурных секциях главной */
-.bg-plaster .hero,
-.bg-plaster .reasons,
-.bg-plaster #uslugi,
-.bg-plaster .section:has(#steps-h),
-.bg-plaster .section:has(#port-h),
-.bg-plaster .section:has(#why-h),
-.bg-plaster .section:has(#rv-h),
-.bg-plaster #zayavka,
-.bg-plaster .section:has(#cont-h){
+/* Зерно и ритм тона — на любой странице, по позиции секции в <main>, а не по
+   конкретным id (структура у каждого шаблона своя). hero — свой навy-тон ниже,
+   .uk (единственный намеренно тёмный акцентный блок, только на главной) и
+   .closing (акцентный светло-синий баннер на страницах услуг) не трогаем —
+   зерно на них не кладём, тон не перебиваем. */
+.bg-plaster main > section:not(.hero):not(.uk):not(.closing):not(.form-sec){
   background-image:var(--grain);
   background-size:160px 160px;
 }
-/* разводы кельмы поверх зерна — только hero и форма заявки */
-.bg-plaster .hero,
-.bg-plaster #zayavka{
+.bg-plaster main > section:not(.hero):not(.uk):not(.closing):not(.form-sec):nth-of-type(odd){ background-color:var(--bg-1); }
+.bg-plaster main > section:not(.hero):not(.uk):not(.closing):not(.form-sec):nth-of-type(even){ background-color:var(--bg-2); }
+/* форма заявки — самый плотный тон и разводы кельмы, как у hero: акцентная точка на любой странице */
+.bg-plaster main > section.form-sec{
+  background-color:var(--bg-3);
   background-image:var(--grain),var(--trowel);
   background-size:160px 160px,600px 600px;
 }
-
-/* ритм тона секций сверху вниз — важнее самой фактуры, даёт странице объём */
-.bg-plaster .hero{ background-color:var(--bg-3); }
-.bg-plaster .reasons{ background-color:var(--bg-1); }
-.bg-plaster #uslugi{ background-color:var(--bg-2); }
-.bg-plaster .section:has(#steps-h){ background-color:var(--bg-1); }
-.bg-plaster .section:has(#port-h){ background-color:var(--bg-2); }
-.bg-plaster .section:has(#why-h){ background-color:var(--bg-3); }
-.bg-plaster .section:has(#rv-h){ background-color:var(--bg-1); }
-.bg-plaster #zayavka{ background-color:var(--bg-3); }
-.bg-plaster .section:has(#cont-h){ background-color:var(--bg-2); }
+/* hero — свой тон и разводы кельмы (плюс тонировка под текст, см. ниже) */
+.bg-plaster .hero{
+  background-color:var(--bg-3);
+  background-image:var(--grain),var(--trowel);
+  background-size:160px 160px,600px 600px;
+}
 
 /* блок «Управляющим компаниям и ТСЖ» — цвет (тёмно-синий) не трогаем,
    это единственный намеренно тёмный акцентный блок сайта; зерно на тёмном
@@ -154,6 +146,12 @@
 .bg-plaster .hero .plate__in b{ color:#ffd9ad; }
 .bg-plaster .hero .quality{ color:#ffffff; }
 .bg-plaster .hero .quality li+li::before{ color:var(--accent); }
+.bg-plaster .hero .eyebrow{ color:#ffffff; opacity:.92; }
+.bg-plaster .hero .crumbs li{ color:var(--dmuted); }
+.bg-plaster .hero .crumbs a{ color:#ffffff; }
+.bg-plaster .hero .crumbs a:hover{ text-decoration:underline; }
+.bg-plaster .hero .crumbs [aria-current]{ color:#ffffff; font-weight:600; }
+.bg-plaster .hero .crumbs li+li::before{ color:var(--dline); }
 .bg-plaster .hero .btn--ghost{
   border-color:var(--dline);
   color:#ffffff;
@@ -170,6 +168,10 @@
   .bg-plaster .hero h1,
   .bg-plaster .hero__tag,
   .bg-plaster .hero .plate__in,
-  .bg-plaster .hero .quality{ color:var(--ink); }
-  .bg-plaster .hero .lead{ color:var(--muted); }
+  .bg-plaster .hero .quality,
+  .bg-plaster .hero .eyebrow,
+  .bg-plaster .hero .crumbs a,
+  .bg-plaster .hero .crumbs [aria-current]{ color:var(--ink); }
+  .bg-plaster .hero .lead,
+  .bg-plaster .hero .crumbs li{ color:var(--muted); }
 }

@@ -156,7 +156,6 @@ function home() {
     path: '/', title: h.metaTitle, description: h.metaDescription, body, current: '/',
     ld: [orgLd(), { '@context': 'https://schema.org', '@type': 'WebSite', name: company.name, url: abs('/'), inLanguage: 'ru' }],
     heroPreload: bg.preload,
-    extraCss: '/css/bg-plaster.css', bodyClass: 'bg-plaster',
   }), { priority: '1.0' });
 }
 
