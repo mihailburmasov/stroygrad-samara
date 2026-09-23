@@ -80,7 +80,7 @@
     }
   ],
   "gallery": [
-    "seal-01"
+    "facade-01"
   ],
   "related": [
     "germetizaciya-temperaturnyh-shvov",
@@ -88,7 +88,7 @@
     "remont-podezdov"
   ],
   "heroBg": {
-    "art": "facade"
+    "photo": "facade-01"
   },
   "plate": {
     "t": "Фасадные работы",
