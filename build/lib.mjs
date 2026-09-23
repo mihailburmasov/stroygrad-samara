@@ -240,9 +240,9 @@ function footer() {
   const r = company.requisites;
   const hasReq = Object.values(r).some(Boolean);
   const reqHtml = hasReq
-    ? `<p class="ftr__req">${[r.legalName, r.inn && 'ИНН ' + r.inn, r.ogrn && 'ОГРН ' + r.ogrn, r.legalAddress].filter(Boolean).map(esc).join(' · ')}</p>`
+    ? `<p class="ftr__req">${[r.legalName, r.inn && 'ИНН ' + r.inn, r.ogrn && 'ОГРН ' + r.ogrn].filter(Boolean).map(esc).join(' · ')}</p>`
     : DRAFT
-      ? `<p class="ftr__req">${todo('юрлицо/ИП, ИНН, ОГРН, юридический адрес')}</p>`
+      ? `<p class="ftr__req">${todo('юрлицо/ИП, ИНН, ОГРН')}</p>`
       : '';
   const svcList = services.map(s => `<li><a href="${href(`/services/${s.slug}/`)}">${esc(s.title)}</a></li>`).join('');
   return `<footer class="ftr on-dark">
@@ -259,7 +259,6 @@ function footer() {
   </div>
   <div class="wrap ftr__bottom">
     <div>
-      <p>© ${company.foundedYear}–${YEAR} ${company.name}. Работаем в Самаре и Самарской области.</p>
       ${reqHtml}
     </div>
     <div class="ftr__legal footer-bottom-links">
