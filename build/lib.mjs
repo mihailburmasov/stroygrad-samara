@@ -342,7 +342,7 @@ export function heroBg(spec) {
     preload: srcset ? { href: src, srcset, sizes: '(min-width: 900px) 70vw, 100vw' } : { href: src },
   };
 }
-export const plateHtml = (t, sub = '') => `<p class="plate"><span class="plate__in"><span>${esc(t)}</span>${sub ? `<b>${esc(sub)}</b>` : ''}</span></p>`;
+export const plateHtml = (t, sub = '') => `<p class="plate"><span class="plate__in"><i class="plate__bar" aria-hidden="true"></i><span>${esc(t)}</span>${sub ? `<b>${esc(sub)}</b>` : ''}</span></p>`;
 export const sroHtml = (cls = '') => `<div class="sro ${cls}">${icon('shield')}<div><b>СРО, гарантия до ${company.warrantyYears} лет!</b><span>${esc(company.slogans.triad)}</span></div></div>`;
 
 export function pageHero({ h1, lead, crumbsHtml = '', actions = '', chips = [], bg, plate = null, eyebrow = '', tag = '', quality = null, sro = true, home = false }) {

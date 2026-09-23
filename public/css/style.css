@@ -224,10 +224,11 @@ ul,ol{margin:0;padding:0}
   .hero__sro{position:absolute;right:var(--gut);bottom:16px}
 }
 .hero__sro{margin-top:22px}
-/* плашка над заголовком: тонкая линия слева, без «таблички» */
+/* плашка над заголовком: овальный бейдж с оранжевой чёрточкой слева */
 .plate{display:block;margin:0 0 14px;max-width:100%}
-.plate__in{display:flex;flex-wrap:wrap;align-items:center;gap:2px 14px;padding:2px 0 2px 14px;border-left:3px solid var(--accent);font-weight:800;font-size:.84rem;letter-spacing:.09em;text-transform:uppercase;color:var(--ink)}
-.plate__in b{font-weight:700;color:var(--brand);letter-spacing:.07em}
+.plate__in{display:inline-flex;flex-wrap:wrap;align-items:center;gap:2px 14px;padding:9px 20px 9px 16px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);font-weight:800;font-size:.84rem;letter-spacing:.09em;text-transform:uppercase;color:#ffffff}
+.plate__bar{width:3px;height:14px;flex:none;background:var(--accent);border-radius:2px}
+.plate__in b{font-weight:700;color:#ffd9ad;letter-spacing:.07em}
 /* щит «СРО, гарантия до 5 лет!» */
 .sro{display:inline-flex;align-items:center;gap:14px;padding:14px 26px 14px 18px;background:var(--white);border:1px solid var(--brand-line);border-radius:14px;box-shadow:var(--shadow)}
 .sro .ic{width:44px;height:44px;color:var(--accent);stroke-width:1.5}

@@ -148,8 +148,6 @@
 .bg-plaster .hero h1,
 .bg-plaster .hero__tag{ color:#ffffff; }
 .bg-plaster .hero .lead{ color:#e6ecf2; } /* светлее --dmuted: измерено по реальным пикселям, с запасом от локальных светлых пятен фото */
-.bg-plaster .hero .plate__in{ color:#ffffff; }
-.bg-plaster .hero .plate__in b{ color:#ffd9ad; }
 .bg-plaster .hero .quality{ color:#ffffff; }
 .bg-plaster .hero .quality li+li::before{ color:var(--accent); }
 .bg-plaster .hero .eyebrow{ color:#ffffff; opacity:.92; }
