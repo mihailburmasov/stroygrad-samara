@@ -256,25 +256,21 @@ ul,ol{margin:0;padding:0}
 
 /* ---------- иконки-плашки: 5 оттенков по кругу ---------- */
 .reasons__grid .reason:nth-child(5n+2) .reason__ic,
-.grid--svc .svc:nth-child(5n+2) .svc__icon,
-.mega__list li:nth-child(5n+2) .mega__ic,
 .grid--3 .contact:nth-child(5n+2) .reason__ic,
 .grid--3 .trust:nth-child(5n+2) .reason__ic{background:var(--ic-bg2);color:var(--ic-fg2)}
 .reasons__grid .reason:nth-child(5n+3) .reason__ic,
-.grid--svc .svc:nth-child(5n+3) .svc__icon,
-.mega__list li:nth-child(5n+3) .mega__ic,
 .grid--3 .contact:nth-child(5n+3) .reason__ic,
 .grid--3 .trust:nth-child(5n+3) .reason__ic{background:var(--ic-bg3);color:var(--ic-fg3)}
 .reasons__grid .reason:nth-child(5n+4) .reason__ic,
-.grid--svc .svc:nth-child(5n+4) .svc__icon,
-.mega__list li:nth-child(5n+4) .mega__ic,
 .grid--3 .contact:nth-child(5n+4) .reason__ic,
 .grid--3 .trust:nth-child(5n+4) .reason__ic{background:var(--ic-bg4);color:var(--ic-fg4)}
 .reasons__grid .reason:nth-child(5n+5) .reason__ic,
-.grid--svc .svc:nth-child(5n+5) .svc__icon,
-.mega__list li:nth-child(5n+5) .mega__ic,
 .grid--3 .contact:nth-child(5n+5) .reason__ic,
 .grid--3 .trust:nth-child(5n+5) .reason__ic{background:var(--ic-bg5);color:var(--ic-fg5)}
+
+/* ---------- иконки услуг/работ (каталог и меню «Услуги») — один цвет, оранжевый ---------- */
+.grid--svc .svc__icon,
+.mega__ic{background:var(--ic-bg2);color:var(--ic-fg2)}
 
 /* ---------- сетки и карточки ---------- */
 .grid{display:grid;gap:18px}
