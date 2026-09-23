@@ -213,7 +213,7 @@ function header(current) {
   }).join('');
   return `<header class="hdr" id="top">
   <div class="wrap hdr__row">
-    <a class="logo" href="${href('/')}">${LOGO_MARK}<span class="logo__txt"><b>СТРОЙГРАД</b><small>строительная компания · Самара</small></span></a>
+    <a class="logo" href="${href('/')}">${LOGO_MARK}<span class="logo__txt"><b>СТРОЙГРАД</b></span></a>
     <nav class="nav" aria-label="Основное меню">${nav}</nav>
     <div class="hdr__right">
       <a class="hdr__tel" href="tel:${phone0.tel}" data-goal="phone_click">${icon('phone')}<span>${esc(phone0.display)}</span></a>
@@ -248,7 +248,7 @@ function footer() {
   return `<footer class="ftr on-dark">
   <div class="wrap ftr__grid">
     <div class="ftr__brand">
-      <a class="logo" href="${href('/')}">${LOGO_MARK}<span class="logo__txt"><b>СТРОЙГРАД</b><small>строительная компания · Самара</small></span></a>
+      <a class="logo" href="${href('/')}">${LOGO_MARK}<span class="logo__txt"><b>СТРОЙГРАД</b></span></a>
       <p class="ftr__slogan">${esc(company.slogans.main)}</p>
       <p class="ftr__slogan2">${esc(company.slogans.triad)}</p>
       <div class="ftr__contacts">${company.phones.map(p => phoneLink(p, 'ftr__tel')).join('')}<a href="mailto:${company.email}">${esc(company.email)}</a></div>

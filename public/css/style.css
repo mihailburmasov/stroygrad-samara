@@ -112,8 +112,6 @@ ul,ol{margin:0;padding:0}
 .logo__txt{display:flex;flex-direction:column;line-height:1.1}
 .logo__txt b{font-size:1.5rem;font-weight:800;letter-spacing:.05em;color:var(--gold)}
 .on-dark .logo__txt b{color:#fff}
-.logo__txt small{font-size:.68rem;color:var(--gold);letter-spacing:.03em;margin-top:3px}
-.on-dark .logo__txt small{color:var(--dmuted)}
 .nav{display:none;gap:4px;margin-left:12px}
 .nav>a{white-space:nowrap;padding:10px 11px;border-radius:8px;text-decoration:none;font-weight:600;font-size:.97rem;color:var(--ink)}
 .nav>a:hover{background:rgba(255,255,255,.45)}
