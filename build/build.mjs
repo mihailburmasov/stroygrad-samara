@@ -359,15 +359,15 @@ function contactsPage() {
   const bg = heroBg(HERO.contacts);
   const hero = pageHero({ h1: c.h1, lead: c.lead, crumbsHtml: crumbs(items), bg, plate: { t: c.plate, s: c.plateSub }, actions: `<a class="btn btn--primary btn--lg" href="tel:${phone0.tel}" data-goal="phone_click">${icon('phone')}${esc(phone0.display)}</a><a class="btn btn--ghost btn--lg" href="#zayavka">Оставить заявку</a>` });
   const r = company.requisites;
-  const reqRows = [['Наименование', r.legalName], ['ИНН', r.inn], ['ОГРН', r.ogrn], ['Юридический адрес', r.legalAddress]].filter(x => x[1]);
+  const reqRows = [['Наименование', r.legalName], ['ИНН', r.inn], ['ОГРН', r.ogrn], ['Адрес', r.legalAddress]].filter(x => x[1]);
   const req = reqRows.length
-    ? `<div class="card"><h3>Реквизиты</h3><dl class="req">${reqRows.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></div>`
+    ? `<div class="card"><h3>Реквизиты</h3><dl class="reqs">${reqRows.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></div>`
     : DRAFT ? `<div class="card"><h3>Реквизиты</h3><p>${todo('юрлицо/ИП, ИНН, ОГРН, юридический адрес')}</p></div>` : '';
   const info = `<section class="section" aria-labelledby="ci-h"><div class="wrap">
     <h2 id="ci-h" class="sr-only">Как с нами связаться</h2>
     ${contactCards()}
     <div class="grid grid--2 mt-lg">
-      <div class="card"><h3>Где работаем</h3><p>Самара и Самарская область. На объект выезжаем сами: осматриваем, замеряем и составляем смету. Для заказчиков из области согласуем выезд по телефону.</p>${company.officeAddress ? `<p>${esc(company.officeAddress)}</p>` : todo('адрес офиса и режим работы')}</div>
+      <div class="card"><h3>Где работаем</h3><p>Самара и Самарская область. На объект выезжаем сами: осматриваем, замеряем и составляем смету. Для заказчиков из области согласуем выезд по телефону.</p>${company.officeAddress ? `<p>${esc(company.officeAddress)}</p>` : todo('адрес офиса')}${company.workHours ? `<p>Режим работы: ${esc(company.workHours)}</p>` : todo('режим работы')}</div>
       ${req}
     </div></div></section>`;
   const body = hero + info + formHtml({ title: 'Оставить заявку на замер и смету', lead: 'Опишите задачу — мы свяжемся с вами и договоримся о выезде.', subject: 'Заявка со страницы «Контакты»' });

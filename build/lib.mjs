@@ -139,6 +139,7 @@ export function orgLd() {
     areaServed: [{ '@type': 'City', name: company.city }, { '@type': 'AdministrativeArea', name: company.region }],
     sameAs: [company.telegram, company.max],
     knowsAbout: services.map(s => s.title),
+    openingHoursSpecification: { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '09:00', closes: '18:00' },
   };
 }
 

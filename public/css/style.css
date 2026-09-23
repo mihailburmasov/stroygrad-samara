@@ -19,6 +19,10 @@
   --brand-soft:#e8f0fb;
   --brand-line:#c9ddf5;
 
+  /* Металлик (шапка: логотип, название, телефон) */
+  --gold:#a9812f;
+  --gold-h:#8a6a26;
+
   /* CTA (оранжевый — только кнопки и ключевые цифры) */
   --accent:#f97316;
   --accent-h:#fb8b3c;
@@ -94,10 +98,10 @@ ul,ol{margin:0;padding:0}
 .hdr{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .hdr__row{display:flex;align-items:center;gap:16px;min-height:68px}
 .logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);flex:none}
-.logo__mark{width:34px;height:37px;color:var(--brand)}
+.logo__mark{width:34px;height:37px;color:var(--gold)}
 .on-dark .logo__mark{color:#fff}
 .logo__txt{display:flex;flex-direction:column;line-height:1.1}
-.logo__txt b{font-size:1.2rem;font-weight:800;letter-spacing:.06em;color:var(--ink)}
+.logo__txt b{font-size:1.2rem;font-weight:800;letter-spacing:.06em;color:var(--gold)}
 .on-dark .logo__txt b{color:#fff}
 .logo__txt small{font-size:.66rem;color:var(--muted);letter-spacing:.03em;margin-top:3px}
 .on-dark .logo__txt small{color:var(--dmuted)}
@@ -106,8 +110,9 @@ ul,ol{margin:0;padding:0}
 .nav>a:hover{background:var(--brand-soft)}
 .nav>a[aria-current="page"]{color:var(--brand)}
 .hdr__right{display:flex;align-items:center;gap:8px;margin-left:auto}
-.hdr__tel{display:none;align-items:center;gap:8px;font-weight:800;text-decoration:none;color:var(--brand);padding:8px 6px;white-space:nowrap}
-.hdr__tel .ic{color:var(--brand)}
+.hdr__tel{display:none;align-items:center;gap:8px;font-weight:800;text-decoration:none;color:var(--gold);padding:8px 6px;white-space:nowrap}
+.hdr__tel .ic{color:var(--gold)}
+.hdr__tel:hover{color:var(--gold-h)}
 .msg{display:none;align-items:center;justify-content:center;width:42px;height:42px;border-radius:10px;border:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:800;font-size:.8rem}
 .msg:hover{background:var(--brand-soft);border-color:var(--brand-line)}
 .hdr__cta{display:none}
@@ -406,10 +411,10 @@ input:focus,select:focus,textarea:focus{outline:3px solid var(--focus);outline-o
 .facts dl{margin:0;display:grid;gap:14px}
 .facts dt{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700}
 .facts dd{margin:2px 0 0;font-weight:800;font-size:1.1rem;color:var(--brand)}
-.req{margin:0}
-dl.req div{margin-bottom:10px}
-dl.req dt{font-size:.8rem;color:var(--muted);text-transform:uppercase}
-dl.req dd{margin:0;font-weight:600}
+.reqs{margin:0}
+dl.reqs div{margin-bottom:10px}
+dl.reqs dt{font-size:.8rem;color:var(--muted);text-transform:uppercase}
+dl.reqs dd{margin:0;font-weight:600;color:var(--brand)}
 .slogans{list-style:none;display:grid;gap:14px;font-size:clamp(1.15rem,2.2vw,1.5rem);font-weight:800}
 @media (min-width:800px){.slogans{grid-template-columns:1fr 1fr;gap:22px 48px}}
 .slogans li{padding-left:18px;border-left:3px solid var(--accent)}

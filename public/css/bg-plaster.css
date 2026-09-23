@@ -23,6 +23,10 @@
   --bg-1:#f3f0e9; --bg-2:#ebe6db; --bg-3:#e0d9cb; --line:#d6cec0;
   */
 
+  /* ---------- затемнение первого экрана: «Сталь» (по образцу клиента — стальная табличка) ---------- */
+  --hero-steel:#2c3236;
+  --hero-steel-rgb:44,50,54;
+
   /* ---------- плашки: «Молочный» (активен, пара к «Цементу») ---------- */
   --card:#fbfaf7;
   --card-line:#e4e0d8;
@@ -116,8 +120,9 @@
 
 /* ---------- первый экран: без белой плашки под текстом, текст прямо на фото ----------
    Плашка визуально спорила с фактурным фоном и выглядела «приклеенной». Вместо неё —
-   фото тонировано в тёмно-синий бренда (не чёрный), текст светлый, как до перекраски
-   в светлую палитру, только в новом синем тоне вместо чёрно-золотого. */
+   фото тонировано в стальной серый (по пожеланию клиента, образец — стальная
+   табличка с золотой гравировкой), текст светлый. Лёгкий диагональный блик
+   поверх тонировки — «глянец» металла. */
 .bg-plaster .hero__text{
   max-width:640px;
   background:none;
@@ -130,13 +135,14 @@
   position:absolute;
   inset:0;
   z-index:-1;
-  background:linear-gradient(180deg,rgba(15,34,54,.78) 0%,rgba(15,34,54,.92) 100%);
+  background:linear-gradient(180deg,rgba(var(--hero-steel-rgb),.78) 0%,rgba(var(--hero-steel-rgb),.92) 100%);
 }
 @media (min-width:900px){
   .bg-plaster .hero::after{
     background:
-      linear-gradient(90deg,var(--dark) 0%,var(--dark) 28%,rgba(15,34,54,.86) 44%,rgba(15,34,54,.35) 66%,rgba(15,34,54,.14) 100%),
-      linear-gradient(0deg,var(--dark) 0,transparent 26%);
+      linear-gradient(115deg,rgba(255,255,255,.14) 0%,rgba(255,255,255,0) 16%,rgba(255,255,255,.09) 30%,rgba(255,255,255,0) 44%),
+      linear-gradient(90deg,var(--hero-steel) 0%,var(--hero-steel) 28%,rgba(var(--hero-steel-rgb),.86) 44%,rgba(var(--hero-steel-rgb),.35) 66%,rgba(var(--hero-steel-rgb),.14) 100%),
+      linear-gradient(0deg,var(--hero-steel) 0,transparent 26%);
   }
 }
 .bg-plaster .hero h1,
