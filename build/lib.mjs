@@ -217,8 +217,8 @@ function header(current) {
     <nav class="nav" aria-label="Основное меню">${nav}</nav>
     <div class="hdr__right">
       <a class="hdr__tel" href="tel:${phone0.tel}" data-goal="phone_click">${icon('phone')}<span>${esc(phone0.display)}</span></a>
-      <a class="msg" href="${company.telegram}" target="_blank" rel="noopener" aria-label="Написать в Telegram">${icon('telegram')}</a>
       <a class="msg msg--max" href="${company.max}" target="_blank" rel="noopener" aria-label="Открыть группу в MAX">MAX</a>
+      <a class="msg" href="${company.telegram}" target="_blank" rel="noopener" aria-label="Написать в Telegram">${icon('telegram')}</a>
       <a class="btn btn--primary btn--sm hdr__cta" href="${current === '/' ? '#zayavka' : href('/contacts/#zayavka')}">Рассчитать стоимость</a>
       <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mmenu" data-burger>${icon('menu', 'burger__open')}${icon('close', 'burger__close')}</button>
     </div>
