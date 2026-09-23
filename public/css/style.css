@@ -365,6 +365,17 @@ dialog.lb::backdrop{background:rgba(6,8,11,.92)}
 .lb__btn .ic{width:22px;height:22px}
 .lb__btn--prev .ic{transform:rotate(180deg)}
 
+/* ---------- всплывающая форма заявки ---------- */
+dialog.modal{border:0;padding:0;border-radius:var(--radius);width:calc(100% - 32px);max-width:460px;max-height:calc(100vh - 32px);overflow:auto;background:var(--white);color:var(--ink);box-shadow:0 24px 60px rgba(20,32,46,.35)}
+dialog.modal::backdrop{background:rgba(15,20,26,.6)}
+.modal__form{position:relative;padding:32px 26px 26px}
+.modal__form h2{margin:0 12px .3em 0;font-size:1.3rem}
+.modal__form .lead{margin:0 0 18px}
+.modal__close{position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--white);color:var(--ink);display:grid;place-items:center;cursor:pointer}
+.modal__close:hover{background:var(--brand-soft);border-color:var(--brand-line)}
+.modal__close .ic{width:18px;height:18px}
+.modal__alt{margin:14px 0 0;color:var(--muted);font-size:.92rem}
+
 /* ---------- отзывы ---------- */
 .review{display:flex;flex-direction:column;gap:12px;margin:0}
 .review__stars{color:var(--accent);letter-spacing:2px;font-size:1.1rem}

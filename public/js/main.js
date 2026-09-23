@@ -123,6 +123,25 @@
     form.elements.consent.addEventListener('change', function () { fieldErr(form, 'consent', ''); });
   });
 
+  // ---- всплывающая форма заявки: кнопки «Рассчитать стоимость» и т.п. открывают попап вместо перехода в конец страницы ----
+  var leadModal = $('#lead-modal');
+  if (leadModal && typeof HTMLDialogElement === 'function') {
+    var leadSubject = $('[data-modal-subject]', leadModal);
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[href$="#zayavka"]');
+      if (!a) return;
+      e.preventDefault();
+      if (leadSubject) leadSubject.value = (a.textContent || 'Заявка с сайта').trim().replace(/\s+/g, ' ');
+      leadModal.showModal();
+    });
+    $('[data-modal-close]', leadModal).addEventListener('click', function () { leadModal.close(); });
+    leadModal.addEventListener('click', function (e) {
+      var r = leadModal.getBoundingClientRect();
+      var out = e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom;
+      if (out) leadModal.close();
+    });
+  }
+
   // ---- фильтр портфолио (первые фото сразу, остальные по кнопке) ----
   var filters = $$('[data-filter]');
   if (filters.length) {

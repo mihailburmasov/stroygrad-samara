@@ -176,6 +176,31 @@ export function formHtml({ id = 'zayavka', title, lead, subject, withPortfolio =
 </section>`;
 }
 
+// ---------- всплывающая форма заявки (открывается по кнопкам «Рассчитать стоимость» и т.п.) ----------
+export function modalHtml() {
+  const id = 'lead-modal';
+  const opts = services.map(s => `<option value="${esc(s.title)}">${esc(s.title)}</option>`).join('');
+  return `<dialog class="modal" id="${id}" aria-labelledby="${id}-h">
+  <form class="form modal__form" data-form novalidate method="post" action="#">
+    <button class="modal__close" type="button" data-modal-close aria-label="Закрыть">${icon('close')}</button>
+    <h2 id="${id}-h">Оставить заявку</h2>
+    <p class="lead">Оставьте контакты — перезвоним в рабочее время и договоримся о выезде на замер.</p>
+    <input type="hidden" name="subject" value="Заявка с сайта" data-modal-subject>
+    <input type="hidden" name="page" value="">
+    <div class="field"><label for="${id}-name">Ваше имя <span class="req" aria-hidden="true">*</span></label><input id="${id}-name" name="name" type="text" autocomplete="name" required minlength="2" maxlength="80"><p class="field__err" data-err="name" hidden></p></div>
+    <div class="field"><label for="${id}-phone">Телефон <span class="req" aria-hidden="true">*</span></label><input id="${id}-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 ___ ___-__-__" required maxlength="24"><p class="field__err" data-err="phone" hidden></p></div>
+    <div class="field"><label for="${id}-service">Что нужно сделать</label><select id="${id}-service" name="service"><option value="">Выберите направление (по желанию)</option>${opts}</select></div>
+    <div class="field"><label for="${id}-msg">Комментарий</label><textarea id="${id}-msg" name="message" rows="3" maxlength="1000" placeholder="Адрес объекта, что беспокоит, желаемые сроки"></textarea></div>
+    <div class="hp" aria-hidden="true"><label>Не заполняйте это поле <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+    <div class="check"><input id="${id}-consent" type="checkbox" name="consent" value="yes" checked required><label for="${id}-consent">Даю <a href="${href('/consent/')}" target="_blank" rel="noopener">согласие на обработку персональных данных</a> и принимаю <a href="${href('/privacy/')}" target="_blank" rel="noopener">политику конфиденциальности</a></label></div>
+    <p class="field__err" data-err="consent" hidden></p>
+    <button class="btn btn--primary btn--lg btn--block" type="submit">Отправить заявку</button>
+    <div class="form__status" role="status" aria-live="polite" data-status hidden></div>
+    <p class="modal__alt">Или позвоните: ${company.phones.map(p => phoneLink(p, 'link-strong')).join(' · ')}</p>
+  </form>
+</dialog>`;
+}
+
 // ---------- шапка и подвал ----------
 const NAV = [
   { name: 'Услуги', path: '/services/' },
@@ -323,6 +348,7 @@ ${footer()}
   <p>Сайт использует файлы cookie, необходимые для его работы, и данные, которые вы указываете в формах. Подробнее — в <a href="${href('/privacy/')}">политике конфиденциальности</a>.</p>
   <button class="btn btn--primary btn--sm" type="button" data-cookie-ok>Понятно</button>
 </div>
+${modalHtml()}
 <script>window.SG_BASE=${JSON.stringify(BASE)};window.SG_PHONES=${JSON.stringify(company.phones)};window.SG_TG=${JSON.stringify(company.telegram)};window.SG_MAX=${JSON.stringify(company.max)};window.SG_EMAIL=${JSON.stringify(company.email)};</script>
 <script src="${BASE}/js/config.js?v=${BUILD_DATE}"></script>
 <script src="${BASE}/js/main.js?v=${BUILD_DATE}" defer></script>
