@@ -70,7 +70,7 @@ async function collage(file, tiles, { W = 1500, H = 878, slant = 139, gap = 11 }
 // каждая плитка — свой снимок; между всеми коллажами и одиночными фото служб фото не повторяются
 await collage('collage-home.webp', [
   { input: crop('roof'), pos: 'left' },
-  P('asphalt-05'),
+  P('roof-21'),
   P('doors-04'),
   P('elec-07'),
   P('weld-01'),
