@@ -87,8 +87,7 @@
     "remont-podezdov"
   ],
   "heroBg": {
-    "art": "facade",
-    "pos": "center 85%"
+    "photo": "facade-01"
   },
   "plate": {
     "t": "Герметизация швов",
