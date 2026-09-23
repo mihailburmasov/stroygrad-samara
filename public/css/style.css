@@ -243,16 +243,16 @@ ul,ol{margin:0;padding:0}
 .crumbs [aria-current]{color:var(--ink);font-weight:600}
 
 /* ---------- причины ---------- */
-.reasons{background:var(--paper)}
-.reasons__grid{display:grid;gap:0;grid-template-columns:1fr}
-.reason{padding:26px 6px;border-bottom:1px solid var(--line)}
-.reason:last-child{border-bottom:0}
+.reasons{background:var(--paper);padding:72px 0}
+@media (max-width:700px){.reasons{padding:52px 0}}
+.reasons__grid{display:grid;gap:18px;grid-template-columns:1fr}
+.reason{padding:24px 22px}
 .reason__ic,.svc__icon{position:relative;display:inline-grid;place-items:center;width:52px;height:52px;border-radius:14px;background:var(--ic-bg1);color:var(--ic-fg1);margin-bottom:14px}
 .reason__ic .ic,.svc__icon .ic{width:24px;height:24px}
 .reason__t{font-size:1.1rem;margin-bottom:.3em;letter-spacing:normal;text-transform:none}
 .reason p{margin:0;color:var(--muted);font-size:.95rem}
-@media (min-width:700px){.reasons__grid{grid-template-columns:1fr 1fr}.reason{padding:28px 22px;border-right:1px solid var(--line)}.reason:nth-child(2n){border-right:0}.reason:nth-last-child(-n+2){border-bottom:0}}
-@media (min-width:1080px){.reasons__grid{grid-template-columns:repeat(4,1fr)}.reason,.reason:nth-child(2n){border-right:1px solid var(--line);border-bottom:0}.reason:last-child{border-right:0}}
+@media (min-width:700px){.reasons__grid{grid-template-columns:1fr 1fr}}
+@media (min-width:1080px){.reasons__grid{grid-template-columns:repeat(4,1fr)}}
 
 /* ---------- иконки-плашки: 5 оттенков по кругу ---------- */
 .reasons__grid .reason:nth-child(5n+2) .reason__ic,
