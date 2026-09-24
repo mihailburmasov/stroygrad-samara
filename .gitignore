@@ -4,3 +4,5 @@ dist/
 *.log
 storage/
 app/config.local.php
+app/deploy.local.php
+app/config.server.php

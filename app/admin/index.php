@@ -37,6 +37,13 @@ function json_out(array $body, int $code = 200): void
 }
 function redirect(string $to): void { header('Location: ' . $to, true, 303); exit; }
 
+// ---------- пересборка после заливки кода (app/bin/deploy.php), только по ключу из настроек сервера ----------
+if ($route === 'deploy-rebuild' && $method === 'POST' && (string)cfg('deploy_key') !== '' && strlen((string)cfg('deploy_key')) >= 24) {
+    if (!hash_equals((string)cfg('deploy_key'), (string)($_SERVER['HTTP_X_DEPLOY_KEY'] ?? ''))) not_found();
+    try { $r = build_site(); json_out(['ok' => true, 'message' => "страниц {$r['pages']}, изменено файлов {$r['changed']}"]); }
+    catch (Throwable $e) { json_out(['ok' => false, 'error' => $e->getMessage()], 500); }
+}
+
 // ---------- пропуск по секретному адресу ----------
 $acc = admin_account();
 if ($acc && $route !== '' && hash_equals((string)$acc['secret'], $route)) {
