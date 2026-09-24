@@ -381,7 +381,7 @@ export function pageHero({ h1, lead, crumbsHtml = '', actions = '', chips = [], 
       ${eyebrow ? `<p class="eyebrow">${esc(eyebrow)}</p>` : ''}
       <h1>${esc(h1)}</h1>
       ${tag ? `<p class="hero__tag">${esc(tag)}</p>` : ''}
-      <p class="lead">${esc(lead)}</p>
+      <p class="lead">${esc(lead).replace(/\n/g, '<br>')}</p>
       ${actions ? `<div class="hero__actions">${actions}</div>` : ''}
       ${quality ? `<ul class="quality">${quality.map(q => `<li>${esc(q)}</li>`).join('')}</ul>` : ''}
       ${chips.length ? `<ul class="chips">${chips.map(c => `<li>${icon('check')}${esc(c)}</li>`).join('')}</ul>` : ''}
