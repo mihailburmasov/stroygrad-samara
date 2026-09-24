@@ -128,11 +128,10 @@ function page_home(): void
 function contact_cards(): string
 {
     $c = S::$company;
-    $tgName = basename(parse_url($c['telegram'], PHP_URL_PATH) ?: $c['telegram']);
     return '<div class="grid grid--3 contacts">
       <div class="card contact"><span class="reason__ic">' . icon('phone') . '</span><h3>Телефоны</h3><p>' . phone_links('contact__link') . '</p></div>
       <div class="card contact"><span class="reason__ic">' . icon('mail') . '</span><h3>Электронная почта</h3><p><a class="contact__link" href="mailto:' . esc($c['email']) . '">' . esc($c['email']) . '</a></p></div>
-      <div class="card contact"><span class="reason__ic">' . icon('telegram') . '</span><h3>Мессенджеры</h3><p><a class="contact__link" href="' . esc($c['telegram']) . '" target="_blank" rel="noopener">Telegram: @' . esc($tgName) . '</a><a class="contact__link" href="' . esc($c['max']) . '" target="_blank" rel="noopener">Группа в MAX</a></p></div>
+      <div class="card contact"><span class="reason__ic">' . icon('telegram') . '</span><h3>Мы в мессенджерах</h3><p class="contact__btns"><a class="btn btn--dark btn--sm" href="' . esc($c['telegram']) . '" target="_blank" rel="noopener">' . icon('telegram') . 'Telegram-канал</a><a class="btn btn--ghost btn--sm" href="' . esc($c['max']) . '" target="_blank" rel="noopener">Группа в MAX</a></p></div>
     </div>';
 }
 function contacts_block(): string
