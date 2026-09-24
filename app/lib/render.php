@@ -489,7 +489,7 @@ function page_hero(array $o): string
       ' . ($eyebrow ? '<p class="eyebrow">' . esc($eyebrow) . '</p>' : '') . '
       <h1>' . esc($o['h1']) . '</h1>
       ' . ($tag ? '<p class="hero__tag">' . esc($tag) . '</p>' : '') . '
-      <p class="lead">' . esc($o['lead']) . '</p>
+      <p class="lead">' . str_replace("\n", '<br>', esc($o['lead'])) . '</p>
       ' . ($actions ? '<div class="hero__actions">' . $actions . '</div>' : '') . '
       ' . ($quality ? '<ul class="quality">' . join_map($quality, fn($q) => '<li>' . esc($q) . '</li>') . '</ul>' : '') . '
       ' . ($chips ? '<ul class="chips">' . join_map($chips, fn($c) => '<li>' . icon('check') . esc($c) . '</li>') . '</ul>' : '') . '
