@@ -163,7 +163,7 @@ function contactCards() {
   return `<div class="grid grid--3 contacts">
       <div class="card contact"><span class="reason__ic">${icon('phone')}</span><h3>Телефоны</h3><p>${company.phones.map(p => phoneLink(p, 'contact__link')).join('')}</p></div>
       <div class="card contact"><span class="reason__ic">${icon('mail')}</span><h3>Электронная почта</h3><p><a class="contact__link" href="mailto:${company.email}">${esc(company.email)}</a></p></div>
-      <div class="card contact"><span class="reason__ic">${icon('telegram')}</span><h3>Мессенджеры</h3><p><a class="contact__link" href="${company.telegram}" target="_blank" rel="noopener">Telegram: @${company.telegram.split('/').pop()}</a><a class="contact__link" href="${company.max}" target="_blank" rel="noopener">Группа в MAX</a></p></div>
+      <div class="card contact"><span class="reason__ic">${icon('telegram')}</span><h3>Мы в мессенджерах</h3><p class="contact__btns"><a class="btn btn--dark btn--sm" href="${company.telegram}" target="_blank" rel="noopener">${icon('telegram')}Telegram-канал</a><a class="btn btn--ghost btn--sm" href="${company.max}" target="_blank" rel="noopener">Группа в MAX</a></p></div>
     </div>`;
 }
 function contactsBlock() {

@@ -243,7 +243,7 @@ function header(current) {
     <div class="hdr__right">
       <a class="hdr__tel" href="tel:${phone0.tel}" data-goal="phone_click">${icon('phone')}<span>${esc(phone0.display)}</span></a>
       <a class="msg msg--max" href="${company.max}" target="_blank" rel="noopener" aria-label="Открыть группу в MAX">MAX</a>
-      <a class="msg" href="${company.telegram}" target="_blank" rel="noopener" aria-label="Написать в Telegram">${icon('telegram')}</a>
+      <a class="msg" href="${company.telegramChat}" target="_blank" rel="noopener" aria-label="Написать в Telegram">${icon('telegram')}</a>
       <a class="btn btn--primary btn--sm hdr__cta" href="${current === '/' ? '#zayavka' : href('/contacts/#zayavka')}">Рассчитать стоимость</a>
       <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mmenu" data-burger>${icon('menu', 'burger__open')}${icon('close', 'burger__close')}</button>
     </div>
@@ -254,7 +254,7 @@ function header(current) {
         ? `<a href="${href(n.path)}">${n.name}</a>`
         : `<details class="mmenu__sub"><summary>${n.name}${icon('chevron', 'mmenu__chev')}</summary><div class="mmenu__subl"><a href="${href(n.path)}"><b>Все услуги</b></a>${services.map(s => `<a href="${href(`/services/${s.slug}/`)}">${esc(s.title)}</a>`).join('')}</div></details>`)).join('')}</nav>
       <div class="mmenu__contacts">${company.phones.map(p => phoneLink(p, 'mmenu__tel')).join('')}
-        <div class="mmenu__msg"><a class="btn btn--ghost" href="${company.telegram}" target="_blank" rel="noopener">${icon('telegram')} Telegram</a><a class="btn btn--ghost" href="${company.max}" target="_blank" rel="noopener">MAX</a></div>
+        <div class="mmenu__msg"><a class="btn btn--ghost" href="${company.telegramChat}" target="_blank" rel="noopener">${icon('telegram')} Telegram</a><a class="btn btn--ghost" href="${company.max}" target="_blank" rel="noopener">MAX</a></div>
       </div>
     </div>
   </div>
