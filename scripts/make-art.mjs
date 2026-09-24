@@ -72,7 +72,7 @@ await collage('collage-home.webp', [
   { input: crop('roof'), pos: 'left' },
   P('roof-21'),
   P('doors-04'),
-  P('elec-07'),
+  P('asphalt-26'),
   P('weld-01'),
 ]);
 await collage('collage-services.webp', [
