@@ -22,18 +22,18 @@ function call_actions(string $first): string
 }
 function std_chips(): array { return ['СРО и лицензии', 'Гарантия до ' . S::$company['warrantyYears'] . ' лет', 'Договор и смета']; }
 
+// Ссылки на услуги, которые скрыты или удалены, при сборке пропускаются
+function visible_slugs(array $slugs): array { return array_values(array_filter($slugs, fn($sl) => isset(S::$svcBySlug[$sl]))); }
+
 // Проверка целостности данных перед сборкой: ошибка останавливает сборку, сайт остаётся прежним
 function validate_data(): void
 {
     foreach (S::$services as $s) {
-        foreach ($s['related'] ?? [] as $r) if (!isset(S::$svcBySlug[$r])) throw new RuntimeException("Услуга «{$s['title']}»: в смежных услугах указана несуществующая «{$r}»");
         if (empty($s['heroBg'])) throw new RuntimeException("Услуга «{$s['title']}»: не выбран фон первого экрана");
         hero_bg($s['heroBg']);
         gallery_ids($s['gallery'] ?? [], true);
     }
-    foreach (S::$reviews as $r) foreach ($r['services'] ?? [] as $sl) if (!isset(S::$svcBySlug[$sl])) throw new RuntimeException("Отзыв ({$r['author']}): указана несуществующая услуга «{$sl}»");
-    foreach (S::$site['uk']['serviceSlugs'] as $sl) if (!isset(S::$svcBySlug[$sl])) throw new RuntimeException("Страница УК и ТСЖ: нет услуги «{$sl}»");
-    foreach (S::$structure['homePortfolio'] as $b) { photo($b['photo']); if (!isset(S::$svcBySlug[$b['slug']])) throw new RuntimeException("Фото на главной ведут на несуществующую услугу «{$b['slug']}»"); }
+    foreach (S::$structure['homePortfolio'] as $b) photo($b['photo']);
     foreach (S::$structure['hero'] as $spec) hero_bg($spec);
 }
 
@@ -88,7 +88,7 @@ function page_home(): void
     $port = '<section class="section section--paper" aria-labelledby="port-h">
   <div class="wrap">
     <div class="sec-head"><h2 id="port-h">Выполненные объекты</h2><p class="lead">Фото наших работ. Портфолио с адресами объектов — по запросу.</p></div>
-    <div class="grid grid--port">' . join_map(S::$structure['homePortfolio'], fn($b) => '<a class="port card" href="' . href('/services/' . $b['slug'] . '/') . '">' . img($b['photo'], ['sizes' => '(min-width: 900px) 33vw, (min-width: 560px) 50vw, 100vw', 'cls' => 'port__img']) . '<span class="port__cap">' . esc($b['label']) . '</span></a>') . '</div>
+    <div class="grid grid--port">' . join_map(S::$structure['homePortfolio'], fn($b) => '<a class="port card" href="' . href(isset(S::$svcBySlug[$b['slug']]) ? '/services/' . $b['slug'] . '/' : '/portfolio/') . '">' . img($b['photo'], ['sizes' => '(min-width: 900px) 33vw, (min-width: 560px) 50vw, 100vw', 'cls' => 'port__img']) . '<span class="port__cap">' . esc($b['label']) . '</span></a>') . '</div>
     <p class="center mt"><a class="btn btn--dark" href="' . href('/portfolio/') . '">Все объекты ' . icon('arrow') . '</a></p>
   </div>
 </section>';
@@ -223,7 +223,7 @@ function page_service(array $s): void
     $closingText = ($s['closing'] ?? '') ?: $c['slogans']['main'];
     $closing = '<section class="closing" aria-label="' . esc($closingText) . '"><div class="wrap"><p class="closing__t">' . esc($closingText) . '</p><p class="closing__s" aria-hidden="true">★ ★ ★ ★ ★</p></div></section>';
 
-    $related = '<section class="section" aria-labelledby="rel-h"><div class="wrap"><div class="sec-head"><h2 id="rel-h">Смежные услуги</h2></div><div class="grid grid--3">' . join_map($s['related'] ?? [], fn($r) => service_card(S::$svcBySlug[$r])) . '</div></div></section>';
+    $related = '<section class="section" aria-labelledby="rel-h"><div class="wrap"><div class="sec-head"><h2 id="rel-h">Смежные услуги</h2></div><div class="grid grid--3">' . join_map(visible_slugs($s['related'] ?? []), fn($r) => service_card(S::$svcBySlug[$r])) . '</div></div></section>';
 
     $body = $hero . $tiles . $price . $includes . $steps . $gal . $whySec . $rvHtml . $faq . $closing . form_html(['title' => 'Заявка: ' . mb_strtolower($s['title']), 'lead' => 'Оставьте контакты — свяжемся, уточним задачу и договоримся о выезде на осмотр.', 'subject' => 'Заявка: ' . $s['title'], 'selected' => $s['title']]) . $related;
 
@@ -257,7 +257,7 @@ function page_uk(): void
     $needs = '<section class="section" aria-labelledby="needs-h"><div class="wrap"><div class="sec-head"><h2 id="needs-h">' . esc($u['needsTitle']) . '</h2></div>
     <div class="grid grid--3">' . join_map($u['needs'], fn($n) => '<div class="card trust"><span class="reason__ic">' . icon($n['icon']) . '</span><h3>' . esc($n['title']) . '</h3><p>' . esc($n['text']) . '</p></div>') . '</div></div></section>';
     $svcs = '<section class="section section--paper" aria-labelledby="us-h"><div class="wrap"><div class="sec-head"><h2 id="us-h">' . esc($u['servicesTitle']) . '</h2></div>
-    <div class="grid grid--svc">' . join_map($u['serviceSlugs'], fn($sl) => service_card(S::$svcBySlug[$sl])) . '</div></div></section>';
+    <div class="grid grid--svc">' . join_map(visible_slugs($u['serviceSlugs']), fn($sl) => service_card(S::$svcBySlug[$sl])) . '</div></div></section>';
     $docs = '<section class="section" aria-labelledby="docs-h"><div class="wrap two-col">
     <div><h2 id="docs-h">' . esc($u['docsTitle']) . '</h2><ul class="checklist checklist--lg">' . join_map($u['docs'], fn($d) => '<li>' . icon('check') . '<span>' . esc($d) . '</span></li>') . '</ul></div>
     <div><h2>Как мы работаем</h2>' . steps_list(S::$site['home']['steps'], ' steps--v') . '</div>

@@ -1,7 +1,7 @@
 <?php
 // Сборка сайта из командной строки: php app/bin/build.php
 declare(strict_types=1);
-require dirname(__DIR__) . '/bootstrap.php';
+require_once dirname(__DIR__) . '/bootstrap.php';
 
 try {
     $r = build_site();

@@ -71,12 +71,16 @@ function backup_revision(string $rel, string $content, string $who = ''): void
 }
 
 // Взаимное исключение сборок и записей: одна операция за раз.
+// Повторный вход из того же запроса (сохранение -> сборка) не блокируется.
 function with_lock(callable $fn)
 {
+    static $depth = 0;
+    if ($depth > 0) { $depth++; try { return $fn(); } finally { $depth--; } }
     ensure_dir(storage_path());
     $h = fopen(storage_path('.lock'), 'c');
     if (!$h || !flock($h, LOCK_EX)) throw new RuntimeException('Не удалось получить блокировку');
-    try { return $fn(); } finally { flock($h, LOCK_UN); fclose($h); }
+    $depth = 1;
+    try { return $fn(); } finally { $depth = 0; flock($h, LOCK_UN); fclose($h); }
 }
 
 function rrmdir(string $dir): void
