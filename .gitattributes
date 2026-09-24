@@ -1,0 +1,6 @@
+# Данные и ядро — с переводами строк LF, как на сервере: иначе сверка с хостингом видит ложные различия
+data/** text eol=lf
+app/** text eol=lf
+public/**/*.php text eol=lf
+public/.htaccess text eol=lf
+public/.user.ini text eol=lf
