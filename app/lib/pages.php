@@ -360,6 +360,7 @@ function page_contacts(): void
 function date_ru(string $ymd): string
 {
     static $m = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+    if (!preg_match('~^\d{4}-\d\d-\d\d$~', $ymd)) $ymd = S::$buildDate;
     [$y, $mo, $d] = array_map('intval', explode('-', $ymd));
     return $d . ' ' . $m[$mo - 1] . ' ' . $y . ' г.';
 }
@@ -379,7 +380,7 @@ function page_privacy(): void
     $c = S::$company; $email = $c['email']; $site = esc(S::$siteUrl . S::$base);
     $pth = '/privacy/';
     $items = [['name' => 'Главная', 'path' => '/'], ['name' => 'Политика конфиденциальности', 'path' => $pth]];
-    $hh = legal_hero('Политика конфиденциальности', 'Порядок обработки персональных данных посетителей сайта. Редакция от ' . date_ru(S::$buildDate) . '.', $items);
+    $hh = legal_hero('Политика конфиденциальности', 'Порядок обработки персональных данных посетителей сайта. Редакция от ' . date_ru((string)(S::$company['legalDate'] ?? '')) . '.', $items);
     $mail = '<a href="mailto:' . esc($email) . '">' . esc($email) . '</a>';
     $body = $hh['html'] . '<section class="section"><div class="wrap wrap--narrow prose">
 <h2>1. Общие положения</h2>
@@ -411,7 +412,7 @@ function page_consent(): void
     $c = S::$company; $email = $c['email']; $site = esc(S::$siteUrl . S::$base);
     $pth = '/consent/';
     $items = [['name' => 'Главная', 'path' => '/'], ['name' => 'Согласие на обработку персональных данных', 'path' => $pth]];
-    $hh = legal_hero('Согласие на обработку персональных данных', 'Редакция от ' . date_ru(S::$buildDate) . '.', $items);
+    $hh = legal_hero('Согласие на обработку персональных данных', 'Редакция от ' . date_ru((string)(S::$company['legalDate'] ?? '')) . '.', $items);
     $body = $hh['html'] . '<section class="section"><div class="wrap wrap--narrow prose">
 <p>Отправляя форму на сайте ' . $site . '/ и ставя отметку о согласии, я, в соответствии со ст. 9 Федерального закона от 27.07.2006 № 152-ФЗ «О персональных данных», свободно, своей волей и в своём интересе даю согласие оператору — ' . operator_line() . ' — на обработку моих персональных данных на следующих условиях.</p>
 <h2>Какие данные</h2>

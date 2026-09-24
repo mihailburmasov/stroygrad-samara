@@ -3,8 +3,9 @@
 //
 //   php app/bin/deploy.php push          — залить код (ядро, стили, скрипты, шрифты, арт-фоны) и пересобрать сайт на сервере
 //   php app/bin/deploy.php push --dry    — показать, что будет залито, ничего не отправляя
-//   php app/bin/deploy.php init          — первая установка: код + данные + все фото + настройки сервера (только на пустой сервер)
+//   php app/bin/deploy.php init <пароль> — первая установка: код + данные + все фото + настройки сервера + вход в админку (только на пустой сервер)
 //   php app/bin/deploy.php pull          — забрать с сервера данные и фото, которые правил клиент, и пересобрать сайт здесь
+//                                          (пропало больше 5 файлов — остановится и попросит --force)
 //
 // Доступ — в app/deploy.local.php (в git не хранится, пример — app/deploy.example.php).
 // Никогда не заливаются: data/ и фото (кроме init), storage/ (пароли, заявки, история), локальные настройки.
@@ -42,12 +43,15 @@ function code_files(): array
     // статика сайта без фото клиента (img/*.webp — это контент, он живёт на сервере)
     $pub = rtrim(cfg('public_dir'), '/\\');
     foreach (local_files($pub, fn($r) => !preg_match('~^img/[^/]+\.webp$~', $r)) as $r => $p) $files["@docroot/$r"] = $p;
+    // размеры арт-фонов из img/hero — это описание кода, админка его не меняет
+    $files['data/hero.json'] = cfg('data_dir') . '/hero.json';
     return $files;
 }
+const CODE_DATA = ['hero.json'];
 function content_files(): array
 {
     $files = [];
-    foreach (local_files(cfg('data_dir'), fn($r) => str_ends_with($r, '.json')) as $r => $p) $files["data/$r"] = $p;
+    foreach (local_files(cfg('data_dir'), fn($r) => str_ends_with($r, '.json') && !in_array($r, CODE_DATA, true)) as $r => $p) $files["data/$r"] = $p;
     foreach (local_files(rtrim(cfg('public_dir'), '/\\') . '/img', fn($r) => preg_match('~^[^/]+\.webp$~', $r) === 1) as $r => $p) $files["@docroot/img/$r"] = $p;
     return $files;
 }
@@ -168,13 +172,22 @@ if ($cmd === 'init') {
     ftp_close($c);
     $server = APP_DIR . '/config.server.php';
     if (!is_file($server)) { fwrite(STDERR, "Нет app/config.server.php — настройки сервера (пример: app/config.local.example.php).\n"); exit(1); }
+    // вход в админку создаётся здесь и заливается вместе с сайтом — SSH не нужен
+    $password = (isset($argv[2]) && !str_starts_with($argv[2], '--')) ? $argv[2] : '';
+    if (mb_strlen($password) < 10) { fwrite(STDERR, "Укажите пароль админки (от 10 символов): php app/bin/deploy.php init <пароль>\n"); exit(1); }
+    $secret = 'vhod-' . bin2hex(random_bytes(5));
+    $accFile = tempnam(sys_get_temp_dir(), 'adm');
+    file_put_contents($accFile, json_pretty(['hash' => password_hash($password, PASSWORD_DEFAULT), 'secret' => $secret, 'changed' => date('c')]));
     out('Первая установка на ' . $D['host'] . ' …');
     $files = code_files() + content_files();
     $files['app/config.local.php'] = $server;
+    $files['storage/admin.json'] = $accFile;
     upload($D, $files, $dry);
+    unlink($accFile);
     if (!$dry) {
-        out('Теперь создайте вход в админку на сервере (по SSH): php app/bin/admin-setup.php <пароль>');
         remote_rebuild($D);
+        out('Адрес входа в админку: ' . rtrim($D['site_url'], '/') . '/admin/' . $secret . '  — сохраните его, без него админка отвечает 404.');
+        out('Сменить пароль потом можно в админке → Настройки.');
     }
     exit(0);
 }
@@ -185,26 +198,36 @@ if ($cmd === 'pull') {
     if ($dirty !== '' && !$force) { fwrite(STDERR, "В data/ или public/img есть незакоммиченные изменения — сначала закоммитьте их:\n$dirty\n"); exit(1); }
     $c = ftp_open($D);
     $got = 0;
-    $targets = [['data', cfg('data_dir'), '~\.json$~'], ['@docroot/img', rtrim(cfg('public_dir'), '/\\') . '/img', '~^[^/]+\.webp$~']];
-    foreach ($targets as [$rkey, $ldir, $re]) {
+    $isData = fn($r) => preg_match('~\.json$~', $r) === 1 && !in_array($r, CODE_DATA, true);
+    $isPhoto = fn($r) => preg_match('~^[^/]+\.webp$~', $r) === 1;
+    $targets = [['data', cfg('data_dir'), $isData], ['@docroot/img', rtrim(cfg('public_dir'), '/\\') . '/img', $isPhoto]];
+    // Сначала только смотрим. Пустой или странный ответ сервера (неверный путь, сбой листинга)
+    // не должен превратиться в удаление всего контента здесь.
+    $plan = [];
+    foreach ($targets as [$rkey, $ldir, $keep]) {
         $rdir = remote_path($D, $rkey);
-        $tree = ftp_tree($c, $rdir);
+        $tree = array_filter(ftp_tree($c, $rdir), fn($r) => $keep($r), ARRAY_FILTER_USE_KEY);
+        if (!$tree) { fwrite(STDERR, "На сервере в $rdir ничего не найдено — проверьте root/docroot в deploy.local.php. Ничего не изменено.\n"); exit(1); }
+        if ($rkey === 'data' && !isset($tree['site.json'])) { fwrite(STDERR, "На сервере нет $rdir/site.json — похоже, неверный путь. Ничего не изменено.\n"); exit(1); }
+        $gone = array_keys(array_diff_key(local_files($ldir, $keep), $tree));
+        $plan[] = [$rkey, $rdir, $ldir, $tree, $gone];
+    }
+    $allGone = array_merge(...array_map(fn($p) => array_map(fn($r) => $p[0] . '/' . $r, $p[4]), $plan));
+    if (count($allGone) > 5 && !$force) { fwrite(STDERR, 'С сервера пропало ' . count($allGone) . " файлов — это подозрительно много. Проверьте и повторите с --force:\n  " . implode("\n  ", array_slice($allGone, 0, 30)) . "\n"); exit(1); }
+    foreach ($plan as [$rkey, $rdir, $ldir, $tree, $gone]) {
         foreach ($tree as $rel => $info) {
-            if (!preg_match($re, $rel)) continue;
             $local = $ldir . '/' . $rel;
             if (is_file($local) && filesize($local) === $info['size'] && !str_ends_with($rel, '.json')) continue; // фото с тем же размером не качаем
             ensure_dir(dirname($local));
             $tmp = $local . '.part';
             if (!@ftp_get($c, $tmp, "$rdir/$rel", FTP_BINARY)) { @unlink($tmp); fwrite(STDERR, "Не удалось скачать $rel\n"); exit(1); }
-            if (is_file($local) && md5_file($local) === md5_file($tmp)) { unlink($tmp); continue; }
+            if (is_file($local) && str_replace("\r\n", "\n", (string)file_get_contents($local)) === file_get_contents($tmp)) { unlink($tmp); continue; }
             rename($tmp, $local);
             out('  ' . $rkey . '/' . $rel);
             $got++;
         }
-        // файлы, которых на сервере больше нет (клиент удалил услугу или фото)
-        foreach (local_files($ldir, fn($r) => preg_match($re, $r) === 1) as $rel => $p) {
-            if (!isset($tree[$rel]) && !str_starts_with($rel, 'hero/')) { unlink($p); out('  удалено: ' . $rkey . '/' . $rel); $got++; }
-        }
+        // клиент удалил услугу или фото
+        foreach ($gone as $rel) { unlink($ldir . '/' . $rel); out('  удалено: ' . $rkey . '/' . $rel); $got++; }
     }
     ftp_close($c);
     out("Получено изменений: $got");

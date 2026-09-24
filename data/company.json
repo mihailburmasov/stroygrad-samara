@@ -56,5 +56,6 @@
     "sro": null
   },
   "workHours": "Пн–Пт: 9:00–18:00, Сб–Вс: выходной",
-  "officeAddress": null
+  "officeAddress": null,
+  "legalDate": "2026-09-24"
 }
