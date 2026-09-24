@@ -72,7 +72,8 @@ await collage('collage-home.webp', [
   { input: crop('roof'), pos: 'left' },
   P('roof-21'),
   P('doors-04'),
-  P('asphalt-26'),
+  // окно с приближением: погрузчик (справа вверху кадра) — у левого края полосы, который виден на первом экране при любой ширине
+  { input: sharp(path.resolve('public/img', 'asphalt-26.webp')).extract({ left: 829, top: 0, width: 352, height: 675 }) },
   P('weld-01'),
 ]);
 await collage('collage-services.webp', [
