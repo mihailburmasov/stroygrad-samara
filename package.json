@@ -5,9 +5,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node build/build.mjs",
-    "build:local": "node scripts/local-build.mjs",
-    "build:draft": "node scripts/local-build.mjs --draft",
+    "build": "php app/bin/build.php",
     "check": "node scripts/check.mjs",
     "dev": "node scripts/serve.mjs",
     "images": "node scripts/optimize-images.mjs",

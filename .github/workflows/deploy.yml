@@ -22,9 +22,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      # npm install не нужен: генератор использует только встроенные модули Node.js
+      # Сборщик — PHP (он же работает в админке на хостинге); PHP уже есть в образе ubuntu-latest.
+      # Node нужен только для проверки ссылок, npm install не требуется.
       - name: Build
-        run: node build/build.mjs
+        run: php app/bin/build.php && touch dist/.nojekyll
       - name: Check (ссылки, ассеты, SEO-разметка)
         run: node scripts/check.mjs
         env:

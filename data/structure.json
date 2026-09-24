@@ -1,0 +1,47 @@
+{
+  "_comment": "Устройство сайта: порядок услуг в меню и каталоге, фоны первых экранов, категории портфолио, фото на главной. Правится в админке.",
+  "servicesOrder": [
+    "krovelnye-raboty",
+    "fasadnye-raboty",
+    "germetizaciya-temperaturnyh-shvov",
+    "remont-podezdov",
+    "remont-liftovyh-kabin",
+    "okna-i-dveri",
+    "asfaltirovanie-otmostka",
+    "blagoustroystvo-territorij",
+    "spectehnika-vyvoz-snega",
+    "elektromontazhnye-raboty",
+    "svarochnye-raboty",
+    "remont-pomeshcheniy",
+    "kapitalnoe-stroitelstvo-remont",
+    "sezonnaya-podgotovka-zdaniy"
+  ],
+  "hero": {
+    "home": { "art": "collage-home" },
+    "services": { "art": "collage-services" },
+    "uk": { "art": "collage-uk" },
+    "portfolio": { "art": "collage-portfolio" },
+    "about": { "art": "collage-about" },
+    "contacts": { "art": "collage-contacts" },
+    "legal": { "art": "doors" },
+    "nf": { "photo": "weld-04" }
+  },
+  "portfolioCats": [
+    { "key": "roof", "label": "Кровельные работы", "slug": "krovelnye-raboty" },
+    { "key": "entr", "label": "Ремонт подъездов", "slug": "remont-podezdov" },
+    { "key": "lift", "label": "Лифтовые кабины", "slug": "remont-liftovyh-kabin" },
+    { "key": "asphalt", "label": "Асфальт и отмостка", "slug": "asfaltirovanie-otmostka" },
+    { "key": "doors", "label": "Окна и двери", "slug": "okna-i-dveri" },
+    { "key": "elec", "label": "Электромонтаж", "slug": "elektromontazhnye-raboty" },
+    { "key": "weld", "label": "Сварочные работы", "slug": "svarochnye-raboty" },
+    { "key": "seal", "label": "Герметизация швов", "slug": "germetizaciya-temperaturnyh-shvov" }
+  ],
+  "homePortfolio": [
+    { "photo": "roof-01", "label": "Кровельные работы", "slug": "krovelnye-raboty" },
+    { "photo": "lift-01", "label": "Лифтовые кабины", "slug": "remont-liftovyh-kabin" },
+    { "photo": "entr-03", "label": "Ремонт подъездов", "slug": "remont-podezdov" },
+    { "photo": "asphalt-01", "label": "Асфальт и отмостка", "slug": "asfaltirovanie-otmostka" },
+    { "photo": "doors-01", "label": "Окна и двери", "slug": "okna-i-dveri" },
+    { "photo": "elec-01", "label": "Электромонтаж", "slug": "elektromontazhnye-raboty" }
+  ]
+}
