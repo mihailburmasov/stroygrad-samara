@@ -120,6 +120,7 @@ ul,ol{margin:0;padding:0}
 .hdr__tel{display:none;align-items:center;gap:8px;font-weight:800;text-decoration:none;color:var(--brand);padding:8px 6px;white-space:nowrap}
 .hdr__tel .ic{color:var(--brand)}
 .msg{display:none;align-items:center;justify-content:center;width:42px;height:42px;border-radius:10px;border:1px solid rgba(20,26,32,.22);color:var(--ink);text-decoration:none;font-weight:800;font-size:.8rem;background:rgba(255,255,255,.28)}
+.msg .ic{width:24px;height:24px;stroke-width:1.6}
 .msg:hover{background:rgba(255,255,255,.55);border-color:rgba(20,26,32,.32)}
 .hdr__cta{display:none}
 .burger{width:46px;height:46px;border-radius:10px;border:1px solid rgba(20,26,32,.22);background:rgba(255,255,255,.28);color:var(--ink);cursor:pointer;display:grid;place-items:center}

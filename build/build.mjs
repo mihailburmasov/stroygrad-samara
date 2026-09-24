@@ -68,7 +68,7 @@ function home() {
   const bg = heroBg(HERO.home);
   const hero = pageHero({
     home: true, bg, plate: { t: h.plate },
-    h1: h.h1, tag: h.tag, lead: h.lead, quality: h.quality,
+    h1: h.h1, tag: h.tag, lead: h.lead,
     actions: `<a class="btn btn--primary btn--lg" href="#zayavka">Рассчитать стоимость</a><a class="btn btn--ghost btn--lg" href="tel:${phone0.tel}" data-goal="phone_click">${icon('phone')}${esc(phone0.display)}</a>`,
     chips: ['СРО и лицензии', `Гарантия до ${company.warrantyYears} лет`, 'Договор и смета'],
   });
