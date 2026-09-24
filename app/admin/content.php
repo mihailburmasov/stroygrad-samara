@@ -60,6 +60,14 @@ function clean_value(array $fd, $v)
     try {
         switch ($fd['type']) {
             case 'text': case 'textarea': return clean_text($v, $fd);
+            case 'url':
+                $s = clean_text($v, ['type' => 'text'] + $fd);
+                if ($s !== '' && !preg_match('~^https?://[^\s"<>]+$~i', $s)) throw new InvalidArgumentException('ссылка должна начинаться с https://');
+                return $s;
+            case 'email':
+                $s = clean_text($v, ['type' => 'text'] + $fd);
+                if ($s !== '' && !filter_var($s, FILTER_VALIDATE_EMAIL)) throw new InvalidArgumentException('неверный адрес почты');
+                return $s;
             case 'number':
                 if ($v === '' || $v === null) return null;
                 if (!is_numeric($v)) throw new InvalidArgumentException('нужно число');

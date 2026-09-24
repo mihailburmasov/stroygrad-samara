@@ -38,23 +38,26 @@ $digits = preg_replace('~\D~', '', $lead['phone']);
 if (mb_strlen($lead['name']) < 2 || strlen($digits) < 10 || strlen($digits) > 12) lead_reply(400, ['ok' => false, 'error' => 'Укажите имя и телефон']);
 if (($_POST['consent'] ?? '') !== 'yes') lead_reply(400, ['ok' => false, 'error' => 'Нужно согласие на обработку данных']);
 
-// не больше 8 заявок в час с одного адреса
+// Заявка всегда пишется в журнал. Лимит (30 в час с одного адреса — офис за одним IP тоже пройдёт)
+// только придерживает уведомления на почту и в Telegram, чтобы бот не завалил их спамом.
 try {
-    $limited = with_lock(function () use ($lead) {
+    $notify = with_lock(function () use (&$lead) {
         $f = storage_path('lead-rate.json');
         $all = is_file($f) ? read_json($f) : [];
         foreach ($all as $ip => $list) { $all[$ip] = array_values(array_filter($list, fn($t) => $t > time() - 3600)); if (!$all[$ip]) unset($all[$ip]); }
-        if (count($all[$lead['ip']] ?? []) >= 8) return true;
+        $notify = count($all[$lead['ip']] ?? []) < 30;
         $all[$lead['ip']][] = time();
         write_file_atomic($f, json_pretty($all));
+        if (!$notify) $lead['muted'] = true;
         ensure_dir(storage_path('leads'));
-        file_put_contents(storage_path('leads/' . date('Y-m') . '.jsonl'), json_encode($lead, JSON_FLAGS) . "\n", FILE_APPEND | LOCK_EX);
-        return false;
+        if (file_put_contents(storage_path('leads/' . date('Y-m') . '.jsonl'), json_encode($lead, JSON_FLAGS) . "\n", FILE_APPEND | LOCK_EX) === false) throw new RuntimeException('journal');
+        return $notify;
     });
 } catch (Throwable $e) {
+    error_log('lead: ' . $e->getMessage());
     lead_reply(500, ['ok' => false, 'error' => 'Не удалось сохранить заявку']);
 }
-if ($limited) lead_reply(429, ['ok' => false, 'error' => 'Слишком много заявок, позвоните нам']);
+if (!$notify) lead_reply(200, ['ok' => true]);
 
 $lines = [
     $lead['subject'] ?: 'Заявка с сайта',

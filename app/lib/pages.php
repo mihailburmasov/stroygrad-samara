@@ -131,8 +131,8 @@ function contact_cards(): string
     $tgName = basename(parse_url($c['telegram'], PHP_URL_PATH) ?: $c['telegram']);
     return '<div class="grid grid--3 contacts">
       <div class="card contact"><span class="reason__ic">' . icon('phone') . '</span><h3>Телефоны</h3><p>' . phone_links('contact__link') . '</p></div>
-      <div class="card contact"><span class="reason__ic">' . icon('mail') . '</span><h3>Электронная почта</h3><p><a class="contact__link" href="mailto:' . $c['email'] . '">' . esc($c['email']) . '</a></p></div>
-      <div class="card contact"><span class="reason__ic">' . icon('telegram') . '</span><h3>Мессенджеры</h3><p><a class="contact__link" href="' . $c['telegram'] . '" target="_blank" rel="noopener">Telegram: @' . $tgName . '</a><a class="contact__link" href="' . $c['max'] . '" target="_blank" rel="noopener">Группа в MAX</a></p></div>
+      <div class="card contact"><span class="reason__ic">' . icon('mail') . '</span><h3>Электронная почта</h3><p><a class="contact__link" href="mailto:' . esc($c['email']) . '">' . esc($c['email']) . '</a></p></div>
+      <div class="card contact"><span class="reason__ic">' . icon('telegram') . '</span><h3>Мессенджеры</h3><p><a class="contact__link" href="' . esc($c['telegram']) . '" target="_blank" rel="noopener">Telegram: @' . esc($tgName) . '</a><a class="contact__link" href="' . esc($c['max']) . '" target="_blank" rel="noopener">Группа в MAX</a></p></div>
     </div>';
 }
 function contacts_block(): string
@@ -380,7 +380,7 @@ function page_privacy(): void
     $pth = '/privacy/';
     $items = [['name' => 'Главная', 'path' => '/'], ['name' => 'Политика конфиденциальности', 'path' => $pth]];
     $hh = legal_hero('Политика конфиденциальности', 'Порядок обработки персональных данных посетителей сайта. Редакция от ' . date_ru(S::$buildDate) . '.', $items);
-    $mail = '<a href="mailto:' . $email . '">' . esc($email) . '</a>';
+    $mail = '<a href="mailto:' . esc($email) . '">' . esc($email) . '</a>';
     $body = $hh['html'] . '<section class="section"><div class="wrap wrap--narrow prose">
 <h2>1. Общие положения</h2>
 <p>Настоящая политика определяет порядок обработки и защиты персональных данных пользователей сайта ' . $site . '/ (далее — сайт) и составлена в соответствии с Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных».</p>
@@ -421,7 +421,7 @@ function page_consent(): void
 <h2>Действия с данными</h2>
 <p>Сбор, запись, систематизация, накопление, хранение, уточнение (обновление, изменение), использование, передача исполнителям, участвующим в приёме заявок, обезличивание, блокирование, удаление и уничтожение — с использованием средств автоматизации и без них.</p>
 <h2>Срок и отзыв согласия</h2>
-<p>Согласие действует до достижения целей обработки либо до момента его отзыва. Я могу отозвать согласие, направив письменное обращение на <a href="mailto:' . $email . '">' . esc($email) . '</a>. После отзыва оператор прекращает обработку и удаляет данные, если у него нет иных законных оснований для их хранения.</p>
+<p>Согласие действует до достижения целей обработки либо до момента его отзыва. Я могу отозвать согласие, направив письменное обращение на <a href="mailto:' . esc($email) . '">' . esc($email) . '</a>. После отзыва оператор прекращает обработку и удаляет данные, если у него нет иных законных оснований для их хранения.</p>
 <p>Подробнее — в <a href="' . href('/privacy/') . '">политике конфиденциальности</a>.</p>
 </div></section>';
     emit_page($pth, shell(['path' => $pth, 'title' => 'Согласие на обработку персональных данных — СТРОЙГРАД', 'description' => 'Текст согласия на обработку персональных данных при отправке заявки на сайте строительной компании СТРОЙГРАД (Самара).', 'body' => $body, 'current' => $pth, 'ld' => [crumbs_ld($items)], 'heroPreload' => $hh['bg']['preload']]), ['priority' => '0.2']);

@@ -151,6 +151,7 @@ function api(string $action, string $method, array $in): array
         case 'GET photos':
             return photos_payload();
         case 'POST photo/upload':
+            if (empty($_FILES) && (int)($_SERVER['CONTENT_LENGTH'] ?? 0) > 0) throw new InvalidArgumentException('Файл слишком большой для хостинга — уменьшите фото или увеличьте лимит загрузки');
             $e = photo_upload((string)($_POST['cat'] ?? ''), $_FILES['file'] ?? [], (string)($_POST['alt'] ?? ''));
             return ['photo' => $e, 'message' => 'Фото загружено'];
         case 'POST photo/update':

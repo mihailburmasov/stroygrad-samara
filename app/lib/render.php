@@ -41,7 +41,6 @@ function load_site_data(): void
     $svc = array_map('read_json', $files);
     // Порядок — из structure.json; услуги, которых нет в списке, идут в конце
     $order = array_flip(S::$structure['servicesOrder'] ?? []);
-    $idx = array_flip(array_keys($svc));
     usort($svc, fn($a, $b) => [$order[$a['slug']] ?? PHP_INT_MAX, $a['slug']] <=> [$order[$b['slug']] ?? PHP_INT_MAX, $b['slug']]);
     S::$services = array_values(array_filter($svc, fn($s) => empty($s['hidden'])));
     S::$svcBySlug = [];
@@ -53,6 +52,14 @@ function esc($s): string
     return str_replace(['&', '<', '>', '"'], ['&amp;', '&lt;', '&gt;', '&quot;'], (string)($s ?? ''));
 }
 function href(string $p): string { return S::$base . $p; }
+// Ссылка на css/js с версией по содержимому: после обновления файла браузеры сразу берут новый
+function asset(string $p): string
+{
+    static $cache = [];
+    $f = rtrim(cfg('public_dir'), '/\\') . $p;
+    $cache[$p] ??= is_file($f) ? substr(md5_file($f), 0, 10) : S::$buildDate;
+    return S::$base . $p . '?v=' . $cache[$p];
+}
 function abs_url(string $p): string { return S::$siteUrl . S::$base . $p; }
 function json_ld($o): string { return str_replace('<', '\\u003c', json_encode($o, JSON_FLAGS | JSON_UNESCAPED_LINE_TERMINATORS)); }
 function join_map(array $list, callable $fn, string $sep = ''): string { return implode($sep, array_map($fn, $list, array_keys($list))); }
@@ -301,8 +308,8 @@ function site_header(string $current): string
     <nav class="nav" aria-label="Основное меню">' . $nav . '</nav>
     <div class="hdr__right">
       <a class="hdr__tel" href="tel:' . $p0['tel'] . '" data-goal="phone_click">' . icon('phone') . '<span>' . esc($p0['display']) . '</span></a>
-      <a class="msg msg--max" href="' . $c['max'] . '" target="_blank" rel="noopener" aria-label="Открыть группу в MAX">MAX</a>
-      <a class="msg" href="' . $c['telegram'] . '" target="_blank" rel="noopener" aria-label="Написать в Telegram">' . icon('telegram') . '</a>
+      <a class="msg msg--max" href="' . esc($c['max']) . '" target="_blank" rel="noopener" aria-label="Открыть группу в MAX">MAX</a>
+      <a class="msg" href="' . esc($c['telegram']) . '" target="_blank" rel="noopener" aria-label="Написать в Telegram">' . icon('telegram') . '</a>
       <a class="btn btn--primary btn--sm hdr__cta" href="' . cta_href($current) . '">Рассчитать стоимость</a>
       <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mmenu" data-burger>' . icon('menu', 'burger__open') . icon('close', 'burger__close') . '</button>
     </div>
@@ -311,7 +318,7 @@ function site_header(string $current): string
     <div class="wrap">
       <nav aria-label="Мобильное меню">' . $mnav . '</nav>
       <div class="mmenu__contacts">' . phone_links('mmenu__tel') . '
-        <div class="mmenu__msg"><a class="btn btn--ghost" href="' . $c['telegram'] . '" target="_blank" rel="noopener">' . icon('telegram') . ' Telegram</a><a class="btn btn--ghost" href="' . $c['max'] . '" target="_blank" rel="noopener">MAX</a></div>
+        <div class="mmenu__msg"><a class="btn btn--ghost" href="' . esc($c['telegram']) . '" target="_blank" rel="noopener">' . icon('telegram') . ' Telegram</a><a class="btn btn--ghost" href="' . esc($c['max']) . '" target="_blank" rel="noopener">MAX</a></div>
       </div>
     </div>
   </div>
@@ -337,8 +344,8 @@ function site_footer(): string
       <a class="logo" href="' . href('/') . '">' . LOGO_MARK . '<span class="logo__txt"><b>СТРОЙГРАД</b></span></a>
       <p class="ftr__slogan">' . esc($c['slogans']['main']) . '</p>
       <p class="ftr__slogan2">' . esc($c['slogans']['triad']) . '</p>
-      <div class="ftr__contacts">' . phone_links('ftr__tel') . '<a href="mailto:' . $c['email'] . '">' . esc($c['email']) . '</a></div>
-      <div class="ftr__msg"><a class="btn btn--ghost btn--sm" href="' . $c['telegram'] . '" target="_blank" rel="noopener">' . icon('telegram') . ' Telegram</a><a class="btn btn--ghost btn--sm" href="' . $c['max'] . '" target="_blank" rel="noopener">MAX</a></div>
+      <div class="ftr__contacts">' . phone_links('ftr__tel') . '<a href="mailto:' . esc($c['email']) . '">' . esc($c['email']) . '</a></div>
+      <div class="ftr__msg"><a class="btn btn--ghost btn--sm" href="' . esc($c['telegram']) . '" target="_blank" rel="noopener">' . icon('telegram') . ' Telegram</a><a class="btn btn--ghost btn--sm" href="' . esc($c['max']) . '" target="_blank" rel="noopener">MAX</a></div>
     </div>
     <div class="ftr__col ftr__col--wide"><h2 class="ftr__h">Услуги</h2><ul class="ftr__list ftr__list--cols">' . $svcList . '</ul></div>
     <div class="ftr__col"><h2 class="ftr__h">Компания</h2><ul class="ftr__list">' . join_map(NAV, fn($n) => '<li><a href="' . href($n['path']) . '">' . $n['name'] . '</a></li>') . '</ul></div>
@@ -365,11 +372,11 @@ function shell(array $o): string
     $noindex = $o['noindex'] ?? false; $heroPreload = $o['heroPreload'] ?? null;
     $extraCss = array_key_exists('extraCss', $o) ? $o['extraCss'] : '/css/bg-plaster.css';
     $bodyClass = array_key_exists('bodyClass', $o) ? $o['bodyClass'] : 'bg-plaster';
-    $B = S::$base; $v = S::$buildDate; $c = S::$company; $p0 = phone0();
+    $B = S::$base; $c = S::$company; $p0 = phone0();
     $url = abs_url($pth);
     $ldHtml = implode("\n", array_map(fn($x) => '<script type="application/ld+json">' . json_ld($x) . '</script>', $ld));
     $preload = $heroPreload ? '<link rel="preload" as="image" href="' . $heroPreload['href'] . '"' . (!empty($heroPreload['srcset']) ? ' imagesrcset="' . $heroPreload['srcset'] . '" imagesizes="' . $heroPreload['sizes'] . '"' : '') . ' fetchpriority="high">' : '';
-    $boot = 'window.SG_BASE=' . json_encode($B, JSON_FLAGS) . ';window.SG_PHONES=' . json_encode($c['phones'], JSON_FLAGS) . ';window.SG_TG=' . json_encode($c['telegram'], JSON_FLAGS) . ';window.SG_MAX=' . json_encode($c['max'], JSON_FLAGS) . ';window.SG_EMAIL=' . json_encode($c['email'], JSON_FLAGS) . ';';
+    $boot = 'window.SG_BASE=' . json_encode($B, JSON_FLAGS | JSON_HEX_TAG) . ';window.SG_PHONES=' . json_encode($c['phones'], JSON_FLAGS | JSON_HEX_TAG) . ';window.SG_TG=' . json_encode($c['telegram'], JSON_FLAGS | JSON_HEX_TAG) . ';window.SG_MAX=' . json_encode($c['max'], JSON_FLAGS | JSON_HEX_TAG) . ';window.SG_EMAIL=' . json_encode($c['email'], JSON_FLAGS | JSON_HEX_TAG) . ';';
     return '<!doctype html>
 <html lang="ru">
 <head>
@@ -399,7 +406,7 @@ function shell(array $o): string
 <link rel="preload" href="' . $B . '/fonts/manrope-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="' . $B . '/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
 ' . $preload . '
-<link rel="stylesheet" href="' . $B . '/css/style.css?v=' . $v . '">' . ($extraCss ? "\n" . '<link rel="stylesheet" href="' . $B . $extraCss . '?v=' . $v . '">' : '') . '
+<link rel="stylesheet" href="' . asset('/css/style.css') . '">' . ($extraCss ? "\n" . '<link rel="stylesheet" href="' . asset($extraCss) . '">' : '') . '
 ' . $ldHtml . '
 <!-- Яндекс.Метрика: номер счётчика указывается в public/js/config.js (METRIKA_ID) — скрипт подключится автоматически. Цели: form_submit, phone_click. -->
 </head>
@@ -413,7 +420,7 @@ function shell(array $o): string
 ' . site_footer() . '
 <div class="mbar" role="region" aria-label="Быстрая связь">
   <a class="mbar__call" href="tel:' . $p0['tel'] . '" data-goal="phone_click">' . icon('phone') . 'Позвонить</a>
-  <a class="mbar__tg" href="' . $c['telegram'] . '" target="_blank" rel="noopener">' . icon('telegram') . 'Написать в Telegram</a>
+  <a class="mbar__tg" href="' . esc($c['telegram']) . '" target="_blank" rel="noopener">' . icon('telegram') . 'Написать в Telegram</a>
 </div>
 <div class="cookie" data-cookie hidden role="region" aria-label="Уведомление об использовании cookie">
   <p>Сайт использует файлы cookie, необходимые для его работы, и данные, которые вы указываете в формах. Подробнее — в <a href="' . href('/privacy/') . '">политике конфиденциальности</a>.</p>
@@ -421,8 +428,8 @@ function shell(array $o): string
 </div>
 ' . modal_html() . '
 <script>' . $boot . '</script>
-<script src="' . $B . '/js/config.js?v=' . $v . '"></script>
-<script src="' . $B . '/js/main.js?v=' . $v . '" defer></script>
+<script src="' . asset('/js/config.js') . '"></script>
+<script src="' . asset('/js/main.js') . '" defer></script>
 </body>
 </html>
 ';

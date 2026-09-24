@@ -21,7 +21,7 @@ ErrorDocument 404 /404.html
 <FilesMatch "^\.">
   Require all denied
 </FilesMatch>
-<FilesMatch "\.(md|json|lock|log|sh|bat|py|mjs|bak|tmp)$">
+<FilesMatch "\.(md|json|jsonl|lock|log|sh|bat|py|mjs|bak|tmp|ini|env)$">
   Require all denied
 </FilesMatch>
 

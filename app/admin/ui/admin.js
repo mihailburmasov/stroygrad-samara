@@ -126,14 +126,34 @@
     var done = [], n = 0;
     toast('Загружаем фото: ' + list.length + ' шт. Не закрывайте страницу…');
     return list.reduce(function (p, f) {
-      return p.then(function () {
-        var fd = new FormData(); fd.append('cat', cat); fd.append('file', f); fd.append('alt', label);
+      return p.then(function () { return shrink(f); }).then(function (f2) {
+        var fd = new FormData(); fd.append('cat', cat); fd.append('file', f2, f.name); fd.append('alt', label);
         return api('photo/upload', { form: fd }).then(function (j) { done.push(j.photo.id); n++; }).catch(function (e) { toast(f.name + ': ' + e.message, 'err'); });
       });
     }, Promise.resolve()).then(function () {
       if (n) toast('Загружено фото: ' + n + '. Не забудьте поправить подписи — их читают поисковики.');
       return loadPhotos().then(function () { if (onDone) onDone(done); return done; });
     });
+  }
+
+  // Крупное фото с телефона уменьшаем в браузере до 2560 px (поворот по EXIF браузер учитывает сам):
+  // так загрузка быстрее и не упирается в лимит размера файла на хостинге.
+  function shrink(file) {
+    if (file.size < 1.5 * 1024 * 1024 || !window.createImageBitmap) return Promise.resolve(file);
+    var steps = [[2560, 0.9], [2048, 0.85], [1600, 0.8]];
+    return createImageBitmap(file, { imageOrientation: 'from-image' }).then(function (bmp) {
+      function attempt(i) {
+        var k = Math.min(1, steps[i][0] / Math.max(bmp.width, bmp.height));
+        var c = document.createElement('canvas');
+        c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
+        c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+        return new Promise(function (res) { c.toBlob(res, 'image/jpeg', steps[i][1]); }).then(function (b) {
+          if (b && b.size > 1.8 * 1024 * 1024 && i < steps.length - 1) return attempt(i + 1);
+          return b && b.size < file.size ? b : file;
+        });
+      }
+      return attempt(0);
+    }).catch(function () { return file; });
   }
 
   function fileInput(multiple, onFiles) {
@@ -199,7 +219,7 @@
 
   var F = {};
   F.head = function (fd) { return { el: h('div', { class: 'form-head' }, h('h2', { text: fd.label }), fd.hint ? h('p', { text: fd.hint }) : null) }; };
-  F.text = F.textarea = function (fd, v, ch) { var c = textControl(fd, v, ch); return { el: wrapFld(fd, c.el, c.cnt), get: c.get }; };
+  F.text = F.textarea = F.url = F.email = function (fd, v, ch) { var c = textControl(fd, v, ch); return { el: wrapFld(fd, c.el, c.cnt), get: c.get }; };
   F.number = function (fd, v, ch) {
     var el = h('input', { type: 'number', class: 'inp', style: 'max-width:180px' }); el.value = v == null ? '' : v;
     el.addEventListener('input', ch);
