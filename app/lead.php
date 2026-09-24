@@ -69,5 +69,13 @@ $lines = [
 if ($lead['portfolio']) $lines[] = 'Просит портфолио и коммерческое предложение';
 $lines[] = 'Страница: ' . ($lead['page'] ?: '—');
 $lines[] = 'Время: ' . $lead['date'];
+// Посетителю отвечаем сразу (заявка уже в журнале), почта и Telegram уходят после ответа
+$body = json_encode(['ok' => true]);
+ignore_user_abort(true);
+http_response_code(200);
+header('Content-Length: ' . strlen($body));
+header('Connection: close');
+echo $body;
+if (function_exists('fastcgi_finish_request')) fastcgi_finish_request();
+else { while (ob_get_level() > 0) ob_end_flush(); flush(); }
 lead_deliver(implode("\n", $lines), $lead['subject'] ?: 'Заявка с сайта');
-lead_reply(200, ['ok' => true]);

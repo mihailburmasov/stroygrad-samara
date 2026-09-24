@@ -364,6 +364,15 @@ function site_footer(): string
 }
 
 // ---------- оболочка страницы ----------
+// Раздел админки, где правится страница (для кнопки «Редактировать» у вошедшего в админку)
+function edit_route(string $pth): string
+{
+    static $map = ['/' => 'section/home', '/services/' => 'section/services-hub', '/for-uk-tsj/' => 'section/uk', '/portfolio/' => 'section/portfolio', '/about/' => 'section/about', '/contacts/' => 'section/contacts', '/privacy/' => 'section/company', '/consent/' => 'section/company'];
+    if (isset($map[$pth])) return $map[$pth];
+    if (preg_match('~^/services/([a-z0-9-]+)/$~', $pth, $m)) return 'service/' . $m[1];
+    return '';
+}
+
 function shell(array $o): string
 {
     $pth = $o['path'];
@@ -410,7 +419,7 @@ function shell(array $o): string
 ' . $ldHtml . '
 <!-- Яндекс.Метрика: номер счётчика указывается в public/js/config.js (METRIKA_ID) — скрипт подключится автоматически. Цели: form_submit, phone_click. -->
 </head>
-<body' . ($bodyClass ? ' class="' . $bodyClass . '"' : '') . '>
+<body' . ($bodyClass ? ' class="' . $bodyClass . '"' : '') . (edit_route($pth) !== '' ? ' data-edit="' . edit_route($pth) . '"' : '') . '>
 <a class="skip" href="#main">Перейти к содержимому</a>
 ' . sprite_svg() . '
 ' . site_header($current) . '
