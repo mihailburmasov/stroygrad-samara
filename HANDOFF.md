@@ -17,8 +17,9 @@
 - Ящик сайта **site@стройград-самара.рф** (`site@xn----7sbbaani1b6anvdgcih.xn--p1ai`) создан в панели Beget → Почта. Пароль — только в конфигах сервера: `~/stroygrad/app/config.local.php` на хостинге и локальный `app/config.server.php` (в .gitignore), ключ `'smtp'`. В `storage/settings.json` его не класть: `settings_save` перезаписывает файл целиком.
 - `app/lead-deliver.php` (по образцу SANITAR, коммит 0591afb): если задан `cfg('smtp')`, письмо уходит через `smtps://smtp.beget.com:465` от site@, со своими Date и Message-ID; не вышло — запасной путь `mail()` с `-f`. В ответе `smtp` = true или текст ошибки. Отправка в Telegram сохранена (сейчас бот не задан). Кнопка «Отправить проверочную заявку» в админке показывает статус SMTP.
 - Проверено с сервера (с локальной машины порт 465 закрыт провайдером): временный probe → check-auth@verifier.port25.com, probe удалён. Отчёт port25: **SPF pass, iprev pass, DKIM none** (письмо не подписано). Отправитель mail1.smtp.beget.ru.
-- DNS сейчас: SPF `v=spf1 redirect=beget.com` есть, MX — mx1/mx2.beget.com, **DMARC нет**, DKIM-записи нет.
-- **Ждёт пользователя:** (1) TXT `_dmarc` = `v=DMARC1; p=none`; (2) тикет в поддержку Beget на включение DKIM для SMTP домена; (3) после DKIM — повторить probe на port25 (ожидается DKIM pass), затем с разрешения пользователя одна проверочная заявка на olimp@samara-7.ru и проверка, что она во «Входящих».
+- DNS: SPF `v=spf1 redirect=beget.com`, MX — mx1/mx2.beget.com, DMARC `_dmarc` = `v=DMARC1; p=none` (добавил пользователь), DKIM `beget._domainkey` (включила поддержка Beget по тикету, 25.09).
+- Повторная проверка port25 после DKIM (25.09): **SPF pass, iprev pass, DKIM pass**, подпись `d=xn----7sbbaani1b6anvdgcih.xn--p1ai; s=beget` совпадает с доменом From — DMARC выровнен.
+- **Осталось:** с разрешения пользователя — одна проверочная заявка на olimp@samara-7.ru (кнопка в админке → Настройки) и проверка у клиента, что она во «Входящих», а не в «Спаме».
 - На olimp@samara-7.ru проверочных писем после перехода на SMTP не отправляли (по указанию пользователя).
 
 ## Две ветки — это главное
