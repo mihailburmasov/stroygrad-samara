@@ -277,7 +277,7 @@ function footer() {
       <p class="ftr__slogan">${esc(company.slogans.main)}</p>
       <p class="ftr__slogan2">${esc(company.slogans.triad)}</p>
       <div class="ftr__contacts">${company.phones.map(p => phoneLink(p, 'ftr__tel')).join('')}<a href="mailto:${company.email}">${esc(company.email)}</a></div>
-      <div class="ftr__msg"><a class="btn btn--ghost btn--sm" href="${company.telegram}" target="_blank" rel="noopener">${icon('telegram')} Telegram</a><a class="btn btn--ghost btn--sm" href="${company.max}" target="_blank" rel="noopener">MAX</a></div>
+      <div class="ftr__msg"><a class="btn btn--ghost btn--sm" href="${company.telegram}" target="_blank" rel="noopener">${icon('telegram')} Telegram-канал</a><a class="btn btn--ghost btn--sm" href="${company.max}" target="_blank" rel="noopener">${icon('chat')} Группа в MAX</a></div>
     </div>
     <div class="ftr__col ftr__col--wide"><h2 class="ftr__h">Услуги</h2><ul class="ftr__list ftr__list--cols">${svcList}</ul></div>
     <div class="ftr__col"><h2 class="ftr__h">Компания</h2><ul class="ftr__list">${NAV.map(n => `<li><a href="${href(n.path)}">${n.name}</a></li>`).join('')}</ul></div>
