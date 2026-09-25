@@ -68,6 +68,25 @@
       '" target="_blank" rel="noopener">MAX</a> · <a href="mailto:' + window.SG_EMAIL + '">' + window.SG_EMAIL + '</a>';
   }
   function setStatus(box, kind, html) { box.hidden = false; box.className = 'form__status ' + kind; box.innerHTML = html; }
+  // Успех: поля прячутся, на их месте — крупное «Заявка отправлена», чтобы его нельзя было не заметить
+  function showSent(form, status) {
+    setStatus(status, 'is-ok is-sent',
+      '<span class="form__ok-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>' +
+      '<p class="form__ok-h">Заявка отправлена!</p>' +
+      '<p>Спасибо! Мы перезвоним вам в рабочее время.</p>' +
+      '<p class="form__ok-alt">Если вопрос срочный — позвоните:<br>' + contactsHtml() + '</p>' +
+      '<button class="btn btn--ghost btn--sm" type="button" data-form-again>Отправить ещё одну заявку</button>');
+    form.classList.add('is-sent');
+    var modal = form.closest('dialog');
+    if (modal) modal.scrollTop = 0;
+    else status.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    $('[data-form-again]', status).addEventListener('click', function () { resetSent(form); });
+  }
+  function resetSent(form) {
+    form.classList.remove('is-sent');
+    var st = $('[data-status]', form);
+    st.hidden = true; st.innerHTML = '';
+  }
   function fieldErr(form, name, msg) {
     var p = $('[data-err="' + name + '"]', form);
     if (!p) return;
@@ -94,7 +113,7 @@
       if (!consent) ok = false;
       if (!ok) { var bad = $('.has-err input', form) || (!consent && form.elements.consent); if (bad) bad.focus(); return; }
       // honeypot: боты заполняют скрытое поле — имитируем успех и ничего не отправляем
-      if (form.elements.website && form.elements.website.value) { setStatus(status, 'is-ok', 'Спасибо! Заявка отправлена.'); return; }
+      if (form.elements.website && form.elements.website.value) { showSent(form, status); return; }
 
       var btn = $('button[type=submit]', form);
       if (!cfg.FORM_ENDPOINT) {
@@ -112,7 +131,7 @@
         .then(function () {
           goal('form_submit');
           form.reset(); form.elements.consent.checked = true;
-          setStatus(status, 'is-ok', '<strong>Спасибо! Заявка отправлена.</strong> Мы свяжемся с вами в рабочее время. Если вопрос срочный — позвоните: ' + contactsHtml());
+          showSent(form, status);
         })
         .catch(function () {
           setStatus(status, 'is-err', '<strong>Не удалось отправить заявку.</strong> Пожалуйста, свяжитесь с нами напрямую:<br>' + contactsHtml());
@@ -135,6 +154,8 @@
       leadModal.showModal();
     });
     $('[data-modal-close]', leadModal).addEventListener('click', function () { leadModal.close(); });
+    // после закрытия попап снова показывает пустую форму, а не «Заявка отправлена»
+    leadModal.addEventListener('close', function () { resetSent($('[data-form]', leadModal)); });
     leadModal.addEventListener('click', function (e) {
       var r = leadModal.getBoundingClientRect();
       var out = e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom;

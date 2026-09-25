@@ -420,8 +420,17 @@ input:focus,select:focus,textarea:focus{outline:3px solid var(--focus);outline-o
 .form__status{margin-top:16px;padding:14px 16px;border-radius:10px;font-size:.95rem}
 .form__status.is-ok{background:#e6f5ec;color:#0b5a2b}
 .form__status.is-err{background:#fdecea;color:#7a1610}
-.form__status a{font-weight:700}
+.form__status a{font-weight:700;white-space:nowrap}
 .form__status .btn{margin-top:10px}
+.form.is-sent>:not(.form__status):not(.modal__close){display:none}
+.form__status.is-sent{margin:0;padding:28px 20px;text-align:center;font-size:1rem;border:1px solid #bfe3cc}
+.form__status.is-sent p{margin:0 0 8px}
+.form__ok-ic{display:grid;place-items:center;width:64px;height:64px;margin:0 auto 14px;border-radius:50%;background:#1f9d55}
+.form__ok-ic svg{width:34px;height:34px;fill:none;stroke:#fff;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.form__status .form__ok-h{font-size:1.45rem;font-weight:800;color:#0b5a2b;margin-bottom:6px}
+.form__status .form__ok-alt{color:var(--muted);font-size:.92rem;margin-top:14px}
+.form__status.is-sent .btn{margin-top:12px;color:var(--brand);background:var(--white);border-color:var(--brand-line)}
+.modal__form.is-sent{padding-top:56px}
 
 /* ---------- прочее ---------- */
 .facts dl{margin:0;display:grid;gap:14px}
