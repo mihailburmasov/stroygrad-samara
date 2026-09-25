@@ -131,6 +131,7 @@ function admin_sections(): array
         f('url', $co . 'telegram', 'Telegram-канал', 'Кнопка «Telegram-канал» в контактах и подвале. Например: https://t.me/имя', ['required' => true]),
         f('url', $co . 'telegramChat', 'Telegram для сообщений', 'Кнопка Telegram в шапке — личный чат. По номеру: https://t.me/+79272037373'),
         f('url', $co . 'max', 'Ссылка на группу в MAX', 'Начинается с https://', ['required' => true]),
+        f('url', $co . 'maxChat', 'MAX для сообщений', 'Кнопка MAX в шапке — личный чат. Ссылка вида https://max.ru/u/…'),
         f('text', $co . 'workHours', 'Режим работы'),
         f('text', $co . 'officeAddress', 'Адрес офиса', 'Пусто — не показывается'),
         head('Цифры'),

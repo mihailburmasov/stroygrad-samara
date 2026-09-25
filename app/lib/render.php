@@ -111,6 +111,7 @@ function phone_link(array $p, string $cls = '', bool $goal = true): string
 function phone0(): array { return S::$company['phones'][0]; }
 // Telegram для сообщений (личный чат по номеру); если не задан — канал
 function tg_chat(): string { return (string)((S::$company['telegramChat'] ?? '') ?: S::$company['telegram']); }
+function max_chat(): string { return (string)((S::$company['maxChat'] ?? '') ?: S::$company['max']); }
 function phone_links(string $cls, string $sep = ''): string { return join_map(S::$company['phones'], fn($p) => phone_link($p, $cls), $sep); }
 
 // ---------- разметка ----------
@@ -310,7 +311,7 @@ function site_header(string $current): string
     <nav class="nav" aria-label="Основное меню">' . $nav . '</nav>
     <div class="hdr__right">
       <a class="hdr__tel" href="tel:' . $p0['tel'] . '" data-goal="phone_click">' . icon('phone') . '<span>' . esc($p0['display']) . '</span></a>
-      <a class="msg msg--max" href="' . esc($c['max']) . '" target="_blank" rel="noopener" aria-label="Открыть группу в MAX">MAX</a>
+      <a class="msg msg--max" href="' . esc(max_chat()) . '" target="_blank" rel="noopener" aria-label="Написать в MAX">MAX</a>
       <a class="msg" href="' . esc(tg_chat()) . '" target="_blank" rel="noopener" aria-label="Написать в Telegram">' . icon('telegram') . '</a>
       <a class="btn btn--primary btn--sm hdr__cta" href="' . cta_href($current) . '">Рассчитать стоимость</a>
       <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mmenu" data-burger>' . icon('menu', 'burger__open') . icon('close', 'burger__close') . '</button>
@@ -320,7 +321,7 @@ function site_header(string $current): string
     <div class="wrap">
       <nav aria-label="Мобильное меню">' . $mnav . '</nav>
       <div class="mmenu__contacts">' . phone_links('mmenu__tel') . '
-        <div class="mmenu__msg"><a class="btn btn--ghost" href="' . esc(tg_chat()) . '" target="_blank" rel="noopener">' . icon('telegram') . ' Telegram</a><a class="btn btn--ghost" href="' . esc($c['max']) . '" target="_blank" rel="noopener">MAX</a></div>
+        <div class="mmenu__msg"><a class="btn btn--ghost" href="' . esc(tg_chat()) . '" target="_blank" rel="noopener">' . icon('telegram') . ' Telegram</a><a class="btn btn--ghost" href="' . esc(max_chat()) . '" target="_blank" rel="noopener">MAX</a></div>
       </div>
     </div>
   </div>
