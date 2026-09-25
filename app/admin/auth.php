@@ -92,7 +92,6 @@ function session_start_new(): void
     ensure_dir(storage_path('sessions'));
     write_file_atomic(session_file($token), json_pretty(['created' => time(), 'expires' => time() + SESSION_TTL, 'csrf' => bin2hex(random_bytes(16)), 'ip' => client_ip()]));
     admin_cookie('sg_sess', $token, SESSION_TTL);
-    admin_cookie('sg_adm', '1', SESSION_TTL, false); // только для кнопки «Редактировать» на сайте, доступа не даёт
     // старые сессии чистим заодно
     foreach (glob(storage_path('sessions/*.json')) ?: [] as $f) {
         $s = json_decode((string)file_get_contents($f), true);
@@ -105,7 +104,6 @@ function session_end(): void
     $token = (string)($_COOKIE['sg_sess'] ?? '');
     if (preg_match('~^[a-f0-9]{64}$~', $token)) @unlink(session_file($token));
     admin_cookie('sg_sess', '', 0);
-    admin_cookie('sg_adm', '', 0, false);
 }
 
 // ---------- защита от подбора: счётчик в файле, а не в памяти процесса ----------
