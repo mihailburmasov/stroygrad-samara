@@ -175,7 +175,7 @@ function org_ld(): array
         'description' => $c['brandLine'] . ' в Самаре: кровельные, фасадные, электромонтажные и сварочные работы, ремонт подъездов и лифтовых кабин, асфальтирование, окна и двери, вывоз снега. Работаем с ' . $c['foundedYear'] . ' года.',
         'url' => abs_url('/'),
         'logo' => abs_url('/img/logo-512.png'),
-        'image' => abs_url('/og.jpg'),
+        'image' => abs_url('/og.png'),
         'telephone' => array_map(fn($p) => $p['tel'], $c['phones']),
         'email' => $c['email'],
         'foundingDate' => (string)$c['foundedYear'],
@@ -380,7 +380,7 @@ function shell(array $o): string
 {
     $pth = $o['path'];
     $title = $o['title']; $description = $o['description']; $body = $o['body'];
-    $ld = $o['ld'] ?? []; $current = $o['current'] ?? $pth; $ogImage = $o['ogImage'] ?? '/og.jpg';
+    $ld = $o['ld'] ?? []; $current = $o['current'] ?? $pth; $ogImage = $o['ogImage'] ?? '/og.png';
     $noindex = $o['noindex'] ?? false; $heroPreload = $o['heroPreload'] ?? null;
     $extraCss = array_key_exists('extraCss', $o) ? $o['extraCss'] : '/css/bg-plaster.css';
     $bodyClass = array_key_exists('bodyClass', $o) ? $o['bodyClass'] : 'bg-plaster';
@@ -406,9 +406,9 @@ function shell(array $o): string
 <meta property="og:description" content="' . esc($description) . '">
 <meta property="og:url" content="' . $url . '">
 <meta property="og:image" content="' . abs_url($ogImage) . '">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
+<meta property="og:image:width" content="600">
+<meta property="og:image:height" content="600">
+<meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="' . esc($title) . '">
 <meta name="twitter:description" content="' . esc($description) . '">
 <meta name="twitter:image" content="' . abs_url($ogImage) . '">

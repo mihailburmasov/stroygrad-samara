@@ -236,7 +236,7 @@ function page_service(array $s): void
         ],
         faq_ld($s['faq']),
     ];
-    emit_page($pth, shell(['path' => $pth, 'title' => $s['metaTitle'], 'description' => $s['metaDescription'], 'body' => $body, 'ld' => $ld, 'current' => '/services/', 'ogImage' => '/og.jpg', 'heroPreload' => $bg['preload']]), ['priority' => '0.8']);
+    emit_page($pth, shell(['path' => $pth, 'title' => $s['metaTitle'], 'description' => $s['metaDescription'], 'body' => $body, 'ld' => $ld, 'current' => '/services/', 'heroPreload' => $bg['preload']]), ['priority' => '0.8']);
 }
 
 // =====================================================================

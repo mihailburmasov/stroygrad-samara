@@ -68,7 +68,7 @@ const sm = fs.readFileSync(path.join(DIST, 'sitemap.xml'), 'utf8');
 const locs = [...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
 for (const l of locs) { const p = l.replace(/^https?:\/\/[^/]+/, ''); if (!exists(p)) errors.push(`sitemap: нет страницы ${l}`); }
 if (locs.length !== files.length - 1) errors.push(`sitemap: ${locs.length} URL, страниц ${files.length - 1} (без 404)`);
-for (const f of ['robots.txt', 'favicon.svg', 'og.jpg', '.nojekyll', 'js/config.js']) if (!fs.existsSync(path.join(DIST, f))) errors.push('нет файла ' + f);
+for (const f of ['robots.txt', 'favicon.svg', 'og.png', '.nojekyll', 'js/config.js']) if (!fs.existsSync(path.join(DIST, f))) errors.push('нет файла ' + f);
 
 // уникальность текстов услуг: доля общих 8-грамм между парами
 const svcDir = 'data/services';
