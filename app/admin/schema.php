@@ -129,7 +129,7 @@ function admin_sections(): array
         f('items', $co . 'phones', 'Телефоны', 'Первый телефон — главный: он в шапке и на кнопках', ['item' => [k('text', 'display', 'Как показывать', 'Например: 8 927 203-73-73')], 'itemName' => 'Телефон']),
         f('email', $co . 'email', 'Электронная почта', '', ['required' => true]),
         f('url', $co . 'telegram', 'Telegram-канал', 'Кнопка «Telegram-канал» в контактах и подвале. Например: https://t.me/имя', ['required' => true]),
-        f('url', $co . 'telegramChat', 'Telegram для сообщений', 'Кнопка Telegram в шапке — личный чат. По номеру: https://t.me/+79272037373'),
+        f('url', $co . 'telegramChat', 'Telegram для сообщений', 'Кнопка Telegram в шапке и мобильном меню. Пусто — ведёт на Telegram-канал. Личный чат: https://t.me/имя'),
         f('url', $co . 'max', 'Ссылка на группу в MAX', 'Начинается с https://', ['required' => true]),
         f('url', $co . 'maxChat', 'MAX для сообщений', 'Кнопка MAX в шапке — личный чат. Ссылка вида https://max.ru/u/…'),
         f('text', $co . 'workHours', 'Режим работы'),

@@ -109,7 +109,7 @@ function phone_link(array $p, string $cls = '', bool $goal = true): string
     return '<a class="' . $cls . '" href="tel:' . $p['tel'] . '"' . ($goal ? ' data-goal="phone_click"' : '') . '>' . esc($p['display']) . '</a>';
 }
 function phone0(): array { return S::$company['phones'][0]; }
-// Telegram для сообщений (личный чат по номеру); если не задан — канал
+// Telegram в шапке: личный чат, если задан, иначе — канал
 function tg_chat(): string { return (string)((S::$company['telegramChat'] ?? '') ?: S::$company['telegram']); }
 function max_chat(): string { return (string)((S::$company['maxChat'] ?? '') ?: S::$company['max']); }
 function phone_links(string $cls, string $sep = ''): string { return join_map(S::$company['phones'], fn($p) => phone_link($p, $cls), $sep); }
