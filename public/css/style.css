@@ -451,7 +451,7 @@ dl.reqs dd{margin:0;font-weight:600;color:var(--brand)}
 .ftr__contacts{display:flex;flex-direction:column;gap:2px;margin-bottom:14px}
 .ftr__contacts a{text-decoration:none;font-weight:700;padding:5px 0}
 .ftr__contacts a:hover{text-decoration:underline}
-.ftr__msg{display:flex;gap:10px}
+.ftr__msg{display:flex;flex-direction:column;align-items:flex-start;gap:10px}
 .ftr__h{font-size:.85rem;text-transform:uppercase;letter-spacing:.1em;color:var(--dmuted);margin-bottom:14px}
 .ftr__list{list-style:none;display:grid;gap:2px}
 .ftr__list a{display:inline-block;padding:5px 0;text-decoration:none;color:var(--dmuted);font-size:.95rem}

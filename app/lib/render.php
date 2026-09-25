@@ -348,7 +348,7 @@ function site_footer(): string
       <p class="ftr__slogan">' . esc($c['slogans']['main']) . '</p>
       <p class="ftr__slogan2">' . esc($c['slogans']['triad']) . '</p>
       <div class="ftr__contacts">' . phone_links('ftr__tel') . '<a href="mailto:' . esc($c['email']) . '">' . esc($c['email']) . '</a></div>
-      <div class="ftr__msg"><a class="btn btn--ghost btn--sm" href="' . esc($c['telegram']) . '" target="_blank" rel="noopener">' . icon('telegram') . ' Telegram</a><a class="btn btn--ghost btn--sm" href="' . esc($c['max']) . '" target="_blank" rel="noopener">MAX</a></div>
+      <div class="ftr__msg"><a class="btn btn--ghost btn--sm" href="' . esc($c['telegram']) . '" target="_blank" rel="noopener">' . icon('telegram') . ' Telegram-канал</a><a class="btn btn--ghost btn--sm" href="' . esc($c['max']) . '" target="_blank" rel="noopener">' . icon('chat') . ' Группа в MAX</a></div>
     </div>
     <div class="ftr__col ftr__col--wide"><h2 class="ftr__h">Услуги</h2><ul class="ftr__list ftr__list--cols">' . $svcList . '</ul></div>
     <div class="ftr__col"><h2 class="ftr__h">Компания</h2><ul class="ftr__list">' . join_map(NAV, fn($n) => '<li><a href="' . href($n['path']) . '">' . $n['name'] . '</a></li>') . '</ul></div>
