@@ -61,6 +61,16 @@ function asset(string $p): string
     return S::$base . $p . '?v=' . $cache[$p];
 }
 function abs_url(string $p): string { return S::$siteUrl . S::$base . $p; }
+// Номер счётчика Яндекс.Метрики читаем из public/js/config.js: там он правится в одном месте, здесь нужен для <noscript>-пикселя
+function metrika_id(): string
+{
+    static $id = null;
+    if ($id === null) {
+        $f = rtrim(cfg('public_dir'), '/\\') . '/js/config.js';
+        $id = is_file($f) && preg_match('/METRIKA_ID\s*:\s*[\'"](\d+)[\'"]/', (string)file_get_contents($f), $m) ? $m[1] : '';
+    }
+    return $id;
+}
 function json_ld($o): string { return str_replace('<', '\\u003c', json_encode($o, JSON_FLAGS | JSON_UNESCAPED_LINE_TERMINATORS)); }
 function join_map(array $list, callable $fn, string $sep = ''): string { return implode($sep, array_map($fn, $list, array_keys($list))); }
 
@@ -380,6 +390,7 @@ function shell(array $o): string
     $url = abs_url($pth);
     $ldHtml = implode("\n", array_map(fn($x) => '<script type="application/ld+json">' . json_ld($x) . '</script>', $ld));
     $preload = $heroPreload ? '<link rel="preload" as="image" href="' . $heroPreload['href'] . '"' . (!empty($heroPreload['srcset']) ? ' imagesrcset="' . $heroPreload['srcset'] . '" imagesizes="' . $heroPreload['sizes'] . '"' : '') . ' fetchpriority="high">' : '';
+    $ym = metrika_id();
     $boot = 'window.SG_BASE=' . json_encode($B, JSON_FLAGS | JSON_HEX_TAG) . ';window.SG_PHONES=' . json_encode($c['phones'], JSON_FLAGS | JSON_HEX_TAG) . ';window.SG_TG=' . json_encode($c['telegram'], JSON_FLAGS | JSON_HEX_TAG) . ';window.SG_MAX=' . json_encode($c['max'], JSON_FLAGS | JSON_HEX_TAG) . ';window.SG_EMAIL=' . json_encode($c['email'], JSON_FLAGS | JSON_HEX_TAG) . ';';
     return '<!doctype html>
 <html lang="ru">
@@ -412,7 +423,7 @@ function shell(array $o): string
 ' . $preload . '
 <link rel="stylesheet" href="' . asset('/css/style.css') . '">' . ($extraCss ? "\n" . '<link rel="stylesheet" href="' . asset($extraCss) . '">' : '') . '
 ' . $ldHtml . '
-<!-- Яндекс.Метрика: номер счётчика указывается в public/js/config.js (METRIKA_ID) — скрипт подключится автоматически. Цели: form_submit, phone_click. -->
+<!-- Яндекс.Метрика: номер счётчика указывается в public/js/config.js (METRIKA_ID) — счётчик подключает main.js, ниже перед скриптами — пиксель для браузеров без JS. Цели: form_submit, phone_click. -->
 </head>
 <body' . ($bodyClass ? ' class="' . $bodyClass . '"' : '') . '>
 <a class="skip" href="#main">Перейти к содержимому</a>
@@ -427,10 +438,11 @@ function shell(array $o): string
   <a class="mbar__tg" href="' . esc($c['telegram']) . '" target="_blank" rel="noopener">' . icon('telegram') . 'Написать в Telegram</a>
 </div>
 <div class="cookie" data-cookie hidden role="region" aria-label="Уведомление об использовании cookie">
-  <p>Сайт использует файлы cookie, необходимые для его работы, и данные, которые вы указываете в формах. Подробнее — в <a href="' . href('/privacy/') . '">политике конфиденциальности</a>.</p>
+  <p>Сайт использует файлы cookie, необходимые для его работы, cookie Яндекс.Метрики для сбора обезличенной статистики посещений и данные, которые вы указываете в формах. Подробнее — в <a href="' . href('/privacy/') . '">политике конфиденциальности</a>.</p>
   <button class="btn btn--primary btn--sm" type="button" data-cookie-ok>Понятно</button>
 </div>
 ' . modal_html() . '
+' . ($ym ? '<noscript><div><img src="https://mc.yandex.ru/watch/' . $ym . '" style="position:absolute; left:-9999px;" alt=""></div></noscript>' : '') . '
 <script>' . $boot . '</script>
 <script src="' . asset('/js/config.js') . '"></script>
 <script src="' . asset('/js/main.js') . '" defer></script>
