@@ -107,8 +107,7 @@ ul,ol{margin:0;padding:0}
   box-shadow:0 1px 0 rgba(255,255,255,.55) inset,0 4px 16px rgba(20,26,32,.14)}
 .hdr__row{display:flex;align-items:center;gap:16px;min-height:68px}
 .logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);flex:none}
-.logo__mark{width:34px;height:37px;color:var(--gold)}
-.on-dark .logo__mark{color:#fff}
+.logo__mark{width:78px;height:39px;flex:none;box-shadow:0 1px 3px rgba(20,26,32,.35);border-radius:6px}
 .logo__txt{display:flex;flex-direction:column;line-height:1.1}
 .logo__txt b{font-size:1.5rem;font-weight:800;letter-spacing:.05em;color:var(--gold)}
 .on-dark .logo__txt b{color:#fff}

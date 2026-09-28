@@ -344,7 +344,7 @@ function site_footer(): string
     return '<footer class="ftr on-dark">
   <div class="wrap ftr__grid">
     <div class="ftr__brand">
-      <a class="logo" href="' . href('/') . '">' . LOGO_MARK . '<span class="logo__txt"><b>СТРОЙГРАД</b></span></a>
+      <a class="logo" href="' . href('/') . '">' . str_replace('sgl', 'sglf', LOGO_MARK) . '<span class="logo__txt"><b>СТРОЙГРАД</b></span></a>
       <p class="ftr__slogan">' . esc($c['slogans']['main']) . '</p>
       <p class="ftr__slogan2">' . esc($c['slogans']['triad']) . '</p>
       <div class="ftr__contacts">' . phone_links('ftr__tel') . '<a href="mailto:' . esc($c['email']) . '">' . esc($c['email']) . '</a></div>
@@ -372,7 +372,7 @@ function shell(array $o): string
 {
     $pth = $o['path'];
     $title = $o['title']; $description = $o['description']; $body = $o['body'];
-    $ld = $o['ld'] ?? []; $current = $o['current'] ?? $pth; $ogImage = $o['ogImage'] ?? '/og.png';
+    $ld = $o['ld'] ?? []; $current = $o['current'] ?? $pth; $ogImage = $o['ogImage'] ?? '/og.png?v=2';
     $noindex = $o['noindex'] ?? false; $heroPreload = $o['heroPreload'] ?? null;
     $extraCss = array_key_exists('extraCss', $o) ? $o['extraCss'] : '/css/bg-plaster.css';
     $bodyClass = array_key_exists('bodyClass', $o) ? $o['bodyClass'] : 'bg-plaster';
@@ -404,9 +404,9 @@ function shell(array $o): string
 <meta name="twitter:title" content="' . esc($title) . '">
 <meta name="twitter:description" content="' . esc($description) . '">
 <meta name="twitter:image" content="' . abs_url($ogImage) . '">
-<link rel="icon" href="' . $B . '/favicon.svg" type="image/svg+xml">
-<link rel="icon" href="' . $B . '/favicon-32.png" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" href="' . $B . '/apple-touch-icon.png">
+<link rel="icon" href="' . $B . '/favicon.svg?v=2" type="image/svg+xml">
+<link rel="icon" href="' . $B . '/favicon-32.png?v=2" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="' . $B . '/apple-touch-icon.png?v=2">
 <link rel="preload" href="' . $B . '/fonts/manrope-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="' . $B . '/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
 ' . $preload . '
