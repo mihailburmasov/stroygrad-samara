@@ -61,11 +61,16 @@ function ftp_open(array $D)
 {
     for ($try = 1; $try <= 3; $try++) {
         $c = !empty($D['ssl']) ? @ftp_ssl_connect($D['host'], (int)($D['port'] ?? 21), 20) : @ftp_connect($D['host'], (int)($D['port'] ?? 21), 20);
-        if ($c && @ftp_login($c, $D['user'], $D['pass'])) { ftp_pasv($c, true); return $c; }
+        if ($c) {
+            // Неверный пароль не повторяем: несколько неудачных входов подряд — и хостинг банит IP в файрволе
+            if (@ftp_login($c, $D['user'], $D['pass'])) { ftp_pasv($c, true); return $c; }
+            fwrite(STDERR, "FTP {$D['host']}: сервер ответил, но вход отклонён — проверьте user/pass в deploy.local.php.\nБольше не пробую: повторные неудачные входы приводят к блокировке IP.\n");
+            exit(1);
+        }
         out("  подключение не удалось (попытка $try), ждём…");
         sleep(3 * $try); // хостинги отклоняют частые подключения подряд
     }
-    fwrite(STDERR, "Не удалось подключиться к FTP {$D['host']}\n");
+    fwrite(STDERR, "Не удалось подключиться к FTP {$D['host']} (сервер не отвечает на порту " . (int)($D['port'] ?? 21) . ").\nЕсли сайт при этом открывается у других — вероятно, этот IP заблокирован файрволом хостинга.\n");
     exit(1);
 }
 function remote_path(array $D, string $key): string
