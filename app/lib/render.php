@@ -204,7 +204,7 @@ function consent_html(string $id): string
 }
 function name_field(string $id): string
 {
-    return '<div class="field"><label for="' . $id . '-name">Ваше имя <span class="req" aria-hidden="true">*</span></label><input id="' . $id . '-name" name="name" type="text" autocomplete="name" required minlength="2" maxlength="80"><p class="field__err" data-err="name" hidden></p></div>';
+    return '<div class="field"><label for="' . $id . '-name">Ваше имя <span class="req" aria-hidden="true">*</span></label><input id="' . $id . '-name" name="name" type="text" class="ym-disable-keys" autocomplete="name" required minlength="2" maxlength="80"><p class="field__err" data-err="name" hidden></p></div>';
 }
 
 function form_html(array $o): string
@@ -230,9 +230,9 @@ function form_html(array $o): string
       <input type="hidden" name="subject" value="' . esc($subject) . '">
       <input type="hidden" name="page" value="">
       ' . name_field($id) . '
-      <div class="field"><label for="' . $id . '-phone">Телефон <span class="req" aria-hidden="true">*</span></label><input id="' . $id . '-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 ___ ___-__-__" required maxlength="24"><p class="field__err" data-err="phone" hidden></p></div>
+      <div class="field"><label for="' . $id . '-phone">Телефон <span class="req" aria-hidden="true">*</span></label><input id="' . $id . '-phone" name="phone" type="tel" class="ym-disable-keys" inputmode="tel" autocomplete="tel" placeholder="+7 ___ ___-__-__" required maxlength="24"><p class="field__err" data-err="phone" hidden></p></div>
       <div class="field"><label for="' . $id . '-service">Что нужно сделать</label><select id="' . $id . '-service" name="service"><option value="">Выберите направление (по желанию)</option>' . $opts . '</select></div>
-      <div class="field"><label for="' . $id . '-msg">Комментарий</label><textarea id="' . $id . '-msg" name="message" rows="3" maxlength="1000" placeholder="Адрес объекта, что беспокоит, желаемые сроки"></textarea></div>
+      <div class="field"><label for="' . $id . '-msg">Комментарий</label><textarea id="' . $id . '-msg" name="message" class="ym-disable-keys" rows="3" maxlength="1000" placeholder="Адрес объекта, что беспокоит, желаемые сроки"></textarea></div>
       ' . ($withPortfolio ? '<div class="check"><input id="' . $id . '-pf" type="checkbox" name="want_portfolio" value="yes"><label for="' . $id . '-pf">Прислать портфолио с адресами объектов и коммерческое предложение</label></div>' : '') . '
       <div class="hp" aria-hidden="true"><label>Не заполняйте это поле <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
       ' . consent_html($id) . '
@@ -257,9 +257,9 @@ function modal_html(): string
     <input type="hidden" name="subject" value="Заявка с сайта" data-modal-subject>
     <input type="hidden" name="page" value="">
     ' . name_field($id) . '
-    <div class="field"><label for="' . $id . '-phone">Телефон <span class="req" aria-hidden="true">*</span></label><input id="' . $id . '-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 ___ ___-__-__" required maxlength="24"><p class="field__err" data-err="phone" hidden></p></div>
+    <div class="field"><label for="' . $id . '-phone">Телефон <span class="req" aria-hidden="true">*</span></label><input id="' . $id . '-phone" name="phone" type="tel" class="ym-disable-keys" inputmode="tel" autocomplete="tel" placeholder="+7 ___ ___-__-__" required maxlength="24"><p class="field__err" data-err="phone" hidden></p></div>
     <div class="field"><label for="' . $id . '-service">Что нужно сделать</label><select id="' . $id . '-service" name="service"><option value="">Выберите направление (по желанию)</option>' . $opts . '</select></div>
-    <div class="field"><label for="' . $id . '-msg">Комментарий</label><textarea id="' . $id . '-msg" name="message" rows="3" maxlength="1000" placeholder="Адрес объекта, что беспокоит, желаемые сроки"></textarea></div>
+    <div class="field"><label for="' . $id . '-msg">Комментарий</label><textarea id="' . $id . '-msg" name="message" class="ym-disable-keys" rows="3" maxlength="1000" placeholder="Адрес объекта, что беспокоит, желаемые сроки"></textarea></div>
     <div class="hp" aria-hidden="true"><label>Не заполняйте это поле <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
     ' . consent_html($id) . '
     <p class="field__err" data-err="consent" hidden></p>
