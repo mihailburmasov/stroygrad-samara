@@ -18,7 +18,7 @@
   ],
   "hero": {
     "home": {
-      "art": "collage-home"
+      "photo": "roof-22"
     },
     "services": {
       "art": "collage-services"
@@ -30,7 +30,7 @@
       "art": "collage-portfolio"
     },
     "about": {
-      "art": "collage-about"
+      "photo": "roof-23"
     },
     "contacts": {
       "art": "collage-contacts"
@@ -86,7 +86,7 @@
   ],
   "homePortfolio": [
     {
-      "photo": "roof-01",
+      "photo": "roof-24",
       "label": "Кровельные работы",
       "slug": "krovelnye-raboty"
     },
